@@ -952,20 +952,35 @@ internal static partial class Program
 
     private const uint KeyeventfKeyup = 0x0002;
 
-    private static bool IsCS2Active()
+    [LibraryImport("user32.dll", SetLastError = true)]
+    private static partial uint GetWindowThreadProcessId(nint hWnd, out int lpdwProcessId);
+
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    private static partial nint OpenProcess(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
+
+    [LibraryImport("psapi.dll", SetLastError = true)]
+    private static unsafe partial uint GetModuleFileNameExW(nint hProcess, nint hModule, char* lpFilename, uint nSize);
+
+    [LibraryImport("kernel32.dll")]
+    private static partial uint CloseHandle(nint hObject);
+
+    private const uint PROCESS_QUERY_INFORMATION = 0x0400;
+    private const uint PROCESS_VM_READ = 0x0010;
+
+    private static unsafe bool IsCS2Active()
     {
-        IntPtr foregroundWindow = GetForegroundWindow();
-        if (foregroundWindow == IntPtr.Zero) return false;
-
-        var windowText = new System.Text.StringBuilder(256);
-        GetWindowText(foregroundWindow, windowText, windowText.Capacity);
-
-        if (windowText.ToString() == "Counter-Strike 2" || windowText.ToString() == "反恐精英：全球攻势")
-        {
-            return true;
+        if (GetWindowThreadProcessId(GetForegroundWindow(), out var pid) == 0) {
+            return false;
         }
-
-        var title = windowText.ToString().ToLower();
-        return title.Contains("counter-strike") || title.Contains("cs2") || title.Contains("csgo");
+        var hProc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
+        if (hProc == 0) {
+            return false;
+        }
+        var sProcPath = stackalloc char[32767];
+        if (GetModuleFileNameExW(hProc, nint.Zero, sProcPath, 32767) == 0) {
+            return false;
+        }
+        _ = CloseHandle(hProc);
+        return Path.GetFileName(new string(sProcPath)).Equals("cs2.exe", StringComparison.InvariantCultureIgnoreCase);
     }
 }
