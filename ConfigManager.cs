@@ -30,14 +30,14 @@ public class ConfigManager
                     if (Config.TotalCfgFiles <= 0) Config.TotalCfgFiles = 5;
                     Config.CS2Path ??= string.Empty;
 
-                    Console.WriteLine("已加载配置文件。");
+                    Console.WriteLine("已載入設定檔。");
                     return;
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"加载配置文件时出错: {ex.Message}");
+            Console.WriteLine($"載入設定檔時發生錯誤: {ex.Message}");
         }
 
         LoadDefaultConfig();
@@ -60,7 +60,7 @@ public class ConfigManager
             CS2Path = string.Empty,
             KeySimulationMethod = 3,
         };
-        Console.WriteLine("已加载默认配置。");
+        Console.WriteLine("已載入預設設定。");
     }
 
     public void SaveConfig()
@@ -72,23 +72,23 @@ public class ConfigManager
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"保存配置文件时出错: {ex.Message}");
+            Console.WriteLine($"儲存設定檔時發生錯誤: {ex.Message}");
         }
     }
 
     public class KeyConfig
     {
         public string ChatKey { get; set; } = "y";
-        public string UserPlayerName { get; set; } = string.Empty; // 用于GSI模式下的“仅自己死亡”
-        public bool OnlySelfDeath { get; set; } = true; // GSI模式选项
-        public bool SkipWindowCheck { get; set; } // GSI模式选项
-        public bool ForceMode { get; set; } // GSI模式选项
-        public int KeyDelay { get; set; } = 100; // GSI模式选项
+        public string UserPlayerName { get; set; } = string.Empty; // 用於GSI模式下的「僅自己死亡」
+        public bool OnlySelfDeath { get; set; } = true; // GSI模式選項
+        public bool SkipWindowCheck { get; set; } // GSI模式選項
+        public bool ForceMode { get; set; } // GSI模式選項
+        public int KeyDelay { get; set; } = 100; // GSI模式選項
         public bool UseCfgMode { get; set; } // True表示使用CFG模式，False表示GSI聊天模式
-        public int TotalCfgFiles { get; set; } = 5; // CFG模式下生成的CFG文件数量
+        public int TotalCfgFiles { get; set; } = 5; // CFG模式下產生的CFG檔案數量
 
         public List<string> BindKeys { get; set; } = ["p", "k", "l", "m"];
-        public string? CS2Path { get; set; } = string.Empty; // CS2游戏根目录路径
+        public string? CS2Path { get; set; } = string.Empty; // CS2遊戲根目錄路徑
         public int KeySimulationMethod { get; set; } = 3;
     }
 }

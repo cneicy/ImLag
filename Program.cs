@@ -10,13 +10,13 @@ using WindowsInput.Native;
 
 namespace ImLag;
 
-[SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
+[SuppressMessage("Interoperability", "CA1416:驗證平台相容性")]
 internal static partial class Program
 {
     public const string Version = "2.0.4";
     private const string Author = "Eicy";
     private const string Name = "ImLag";
-    private const string UpdateLog = "优化CS检测模式、添加WinFormSendKeys模拟模式。";
+    private const string UpdateLog = "優化CS檢測模式、新增WinFormSendKeys模擬模式。";
 
     private static GameStateListener? _gsl;
     private static ChatMessageManager _chatManager;
@@ -34,8 +34,8 @@ internal static partial class Program
 
         if (!IsRunningAsAdministrator())
         {
-            Console.WriteLine("警告：请以管理员身份运行以确保按键发送和CFG写入正常。");
-            Console.WriteLine("按任意键继续...");
+            Console.WriteLine("警告：請以系統管理員身分執行以確保按鍵發送和CFG寫入正常。");
+            Console.WriteLine("按任意鍵繼續...");
             Console.ReadKey();
             Console.Clear();
         }
@@ -61,12 +61,12 @@ internal static partial class Program
         _gsl = new GameStateListener(4000);
         if (!_gsl.GenerateGSIConfigFile("ImLag"))
         {
-            Console.WriteLine("无法生成GSI配置文件。");
+            Console.WriteLine("無法產生GSI設定檔。");
         }
 
         _gsl.PlayerDied += OnPlayerDied;
 
-        Console.WriteLine(!_gsl.Start() ? "GSI启动失败，请以管理员身份运行。" : "正在监听CS2游戏事件 (GSI)...");
+        Console.WriteLine(!_gsl.Start() ? "GSI啟動失敗，請以系統管理員身分執行。" : "正在監聽CS2遊戲事件 (GSI)...");
 
         Console.WriteLine($"=== {Name} v{Version} by {Author} ===");
         Init();
@@ -89,14 +89,14 @@ internal static partial class Program
                     DeleteMessage();
                     break;
                 case ConsoleKey.L:
-                    Console.WriteLine("\n消息列表：");
+                    Console.WriteLine("\n訊息清單：");
                     _chatManager.DisplayMessages();
                     break;
                 case ConsoleKey.C:
                     if (!_configManager.Config.UseCfgMode)
                         ChangeChatKey();
                     else
-                        Console.WriteLine("\nCFG模式无需配置聊天按键，请用绑定键。");
+                        Console.WriteLine("\nCFG模式無需設定聊天按鍵，請用綁定鍵。");
                     break;
                 case ConsoleKey.P:
                     ChangePlayerName();
@@ -105,25 +105,25 @@ internal static partial class Program
                     if (!_configManager.Config.UseCfgMode)
                         ToggleMonitorMode();
                     else
-                        Console.WriteLine("\nCFG模式下监听模式无效。");
+                        Console.WriteLine("\nCFG模式下監聽模式無效。");
                     break;
                 case ConsoleKey.W:
                     if (!_configManager.Config.UseCfgMode)
                         ToggleWindowCheck();
                     else
-                        Console.WriteLine("\nCFG模式下窗口检测无效。");
+                        Console.WriteLine("\nCFG模式下視窗檢測無效。");
                     break;
                 case ConsoleKey.F:
                     if (!_configManager.Config.UseCfgMode)
                         ToggleForceMode();
                     else
-                        Console.WriteLine("\nCFG模式无需强制发送模式。");
+                        Console.WriteLine("\nCFG模式無需強制發送模式。");
                     break;
                 case ConsoleKey.K:
                     if (!_configManager.Config.UseCfgMode)
                         ChangeKeyDelay();
                     else
-                        Console.WriteLine("\nCFG模式下按键延迟无效。");
+                        Console.WriteLine("\nCFG模式下按鍵延遲無效。");
                     break;
                 case ConsoleKey.V:
                     ShowVersionInfo();
@@ -138,29 +138,29 @@ internal static partial class Program
                     if (_configManager.Config.UseCfgMode)
                         ChangeBindKey();
                     else
-                        Console.WriteLine("\n请先切换到CFG模式 (T)。");
+                        Console.WriteLine("\n請先切換到CFG模式 (T)。");
                     break;
                 case ConsoleKey.S:
                     if (_configManager.Config.UseCfgMode)
                         SetCS2Path();
                     else
-                        Console.WriteLine("\n请先切换到CFG模式 (T)。");
+                        Console.WriteLine("\n請先切換到CFG模式 (T)。");
                     break;
                 case ConsoleKey.G:
                     if (_configManager.Config.UseCfgMode)
                         GenerateCfgFiles();
                     else
-                        Console.WriteLine("\n请先切换到CFG模式 (T)。");
+                        Console.WriteLine("\n請先切換到CFG模式 (T)。");
                     break;
                 default:
-                    Console.WriteLine("\n无效按键，请查看下方提示。");
+                    Console.WriteLine("\n無效按鍵，請查看下方提示。");
                     Init();
                     break;
             }
         } while (keyInfo.Key != ConsoleKey.Escape);
         _configManager.SaveConfig();
         _chatManager.SaveMessages();
-        Console.WriteLine("程序已退出。");
+        Console.WriteLine("程式已結束。");
     }
     
 
@@ -169,14 +169,14 @@ internal static partial class Program
         _configManager.Config.UseCfgMode = !_configManager.Config.UseCfgMode;
         _configManager.SaveConfig();
         Console.Clear();
-        Console.WriteLine($"\n已切换到 {(_configManager.Config.UseCfgMode ? "CFG模式" : "聊天模式")}");
+        Console.WriteLine($"\n已切換到 {(_configManager.Config.UseCfgMode ? "CFG模式" : "聊天模式")}");
 
         if (_configManager.Config.UseCfgMode)
         {
-            Console.WriteLine("CFG模式：通过游戏内按键发送消息，需生成CFG文件 (G)。");
+            Console.WriteLine("CFG模式：透過遊戲內按鍵發送訊息，需產生CFG檔案 (G)。");
             if (string.IsNullOrEmpty(_configManager.Config.CS2Path))
             {
-                Console.WriteLine("\nCS2路径未设置，尝试自动查找...");
+                Console.WriteLine("\nCS2路徑未設定，嘗試自動尋找...");
                 _cfgManager.FindCS2Path();
             }
 
@@ -185,7 +185,7 @@ internal static partial class Program
                 _gsl = new GameStateListener(4000);
                 if (!_gsl.GenerateGSIConfigFile("ImLag"))
                 {
-                    Console.WriteLine("无法生成GSI配置文件。");
+                    Console.WriteLine("無法產生GSI設定檔。");
                 }
 
                 _gsl.PlayerDied += OnPlayerDied;
@@ -193,7 +193,7 @@ internal static partial class Program
 
             if (!_gsl.Running)
             {
-                Console.WriteLine(_gsl.Start() ? "GSI监听启动。" : "GSI启动失败，请以管理员身份运行。");
+                Console.WriteLine(_gsl.Start() ? "GSI監聽啟動。" : "GSI啟動失敗，請以系統管理員身分執行。");
             }
 
             _cfgManager.ShowCfgInstructions();
@@ -205,7 +205,7 @@ internal static partial class Program
                 _gsl = new GameStateListener(4000);
                 if (!_gsl.GenerateGSIConfigFile("ImLag"))
                 {
-                    Console.WriteLine("无法生成GSI配置文件。");
+                    Console.WriteLine("無法產生GSI設定檔。");
                 }
 
                 _gsl.PlayerDied += OnPlayerDied;
@@ -213,10 +213,10 @@ internal static partial class Program
 
             if (!_gsl.Running)
             {
-                Console.WriteLine(_gsl.Start() ? "GSI监听启动。" : "GSI启动失败，请以管理员身份运行。");
+                Console.WriteLine(_gsl.Start() ? "GSI監聽啟動。" : "GSI啟動失敗，請以系統管理員身分執行。");
             }
 
-            Console.WriteLine("聊天模式：GSI检测死亡，自动发送消息。");
+            Console.WriteLine("聊天模式：GSI檢測死亡，自動發送訊息。");
         }
 
         Init();
@@ -226,35 +226,35 @@ internal static partial class Program
     {
         while (true)
         {
-            Console.WriteLine($"\n绑定键: {string.Join(", ", _cfgManager.BindKeys)}");
-            Console.WriteLine("1. 添加绑定键");
-            Console.WriteLine("2. 删除绑定键");
+            Console.WriteLine($"\n綁定鍵: {string.Join(", ", _cfgManager.BindKeys)}");
+            Console.WriteLine("1. 新增綁定鍵");
+            Console.WriteLine("2. 刪除綁定鍵");
             Console.WriteLine("3. 返回");
-            Console.Write("选择 (1-3): ");
+            Console.Write("選擇 (1-3): ");
 
             var choice = Console.ReadLine()?.Trim();
             switch (choice)
             {
                 case "1":
-                    Console.Write("输入绑定键 (字母/数字): ");
+                    Console.Write("輸入綁定鍵 (字母/數字): ");
                     var input = Console.ReadLine()?.Trim().ToLower() ?? "";
                     _cfgManager.AddBindKey(input);
                     break;
                 case "2":
                     if (_cfgManager.BindKeys.Count <= 1)
                     {
-                        Console.WriteLine("需保留至少一个绑定键。");
+                        Console.WriteLine("需保留至少一個綁定鍵。");
                         break;
                     }
 
-                    Console.Write("输入要删除的绑定键: ");
+                    Console.Write("輸入要刪除的綁定鍵: ");
                     var keyToRemove = Console.ReadLine()?.Trim().ToLower() ?? "";
                     _cfgManager.RemoveBindKey(keyToRemove);
                     break;
                 case "3":
                     return;
                 default:
-                    Console.WriteLine("无效选择。");
+                    Console.WriteLine("無效選擇。");
                     break;
             }
         }
@@ -262,9 +262,9 @@ internal static partial class Program
 
     private static void SetCS2Path()
     {
-        Console.WriteLine($"\nCS2路径: {(_cfgManager.CS2Path != "" ? _cfgManager.CS2Path : "未设置")}");
+        Console.WriteLine($"\nCS2路徑: {(_cfgManager.CS2Path != "" ? _cfgManager.CS2Path : "未設定")}");
         Console.Write(
-            @"输入CS2根目录路径 (如: C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive): ");
+            @"輸入CS2根目錄路徑 (如: C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive): ");
         var path = Console.ReadLine()?.Trim() ?? "";
         _cfgManager.SetCS2Path(path);
     }
@@ -276,10 +276,10 @@ internal static partial class Program
 
     private static void GenerateCfgFiles()
     {
-        Console.WriteLine("\n=== 生成CFG文件 ===");
+        Console.WriteLine("\n=== 產生CFG檔案 ===");
         if (!_cfgManager.GenerateConfigFiles()) return;
-        Console.WriteLine("CFG文件已生成。");
-        Console.WriteLine("是否更新 autoexec.cfg 以应用绑定? (y/n)");
+        Console.WriteLine("CFG檔案已產生。");
+        Console.WriteLine("是否更新 autoexec.cfg 以套用綁定? (y/n)");
         var key = Console.ReadKey(true).Key;
         if (key == ConsoleKey.Y)
         {
@@ -290,10 +290,10 @@ internal static partial class Program
         }
         else
         {
-            Console.WriteLine("\n已跳过更新 autoexec.cfg。");
-            Console.WriteLine("请手动添加以下内容到 autoexec.cfg:");
+            Console.WriteLine("\n已跳過更新 autoexec.cfg。");
+            Console.WriteLine("請手動新增以下內容到 autoexec.cfg:");
             Console.WriteLine($"bind \"{string.Join(", ", _cfgManager.BindKeys)}\" \"exec random_say_selector\"");
-            Console.WriteLine($"路径: {_cfgManager.CfgPath}\\autoexec.cfg");
+            Console.WriteLine($"路徑: {_cfgManager.CfgPath}\\autoexec.cfg");
         }
     }
 
@@ -311,21 +311,21 @@ internal static partial class Program
 
         Console.WriteLine(nextMethod switch
         {
-            0 => "\n模拟方式切换为: keybd_event",
-            1 => "\n模拟方式切换为: InputSimulator",
-            2 => "\n模拟方式切换为: SendInput",
-            3 => "\n模拟方式切换为: WinForm SendKeys",
-            _ => "\n模拟方式切换为: keybd_event"
+            0 => "\n模擬方式切換為: keybd_event",
+            1 => "\n模擬方式切換為: InputSimulator",
+            2 => "\n模擬方式切換為: SendInput",
+            3 => "\n模擬方式切換為: WinForm SendKeys",
+            _ => "\n模擬方式切換為: keybd_event"
         });
         
         if (_useInputSimulator)
-            Console.WriteLine("InputSimulator 模式，可能需管理员权限。");
+            Console.WriteLine("InputSimulator 模式，可能需要系統管理員權限。");
         else if (_useSendInput)
-            Console.WriteLine("SendInput 模式，更现代且可靠。");
+            Console.WriteLine("SendInput 模式，更現代且可靠。");
         else if (_useWinFormSendKeys)
-            Console.WriteLine("WinForm SendKeys 模式，依赖活动窗口。");
+            Console.WriteLine("WinForm SendKeys 模式，依賴使用中視窗。");
         else
-            Console.WriteLine("keybd_event 模式，兼容性较好。");
+            Console.WriteLine("keybd_event 模式，相容性較佳。");
     }
 
     private static bool IsRunningAsAdministrator()
@@ -347,27 +347,27 @@ internal static partial class Program
         _configManager.Config.ForceMode = !_configManager.Config.ForceMode;
         _configManager.SaveConfig();
 
-        Console.WriteLine($"\n强制发送模式已{(_configManager.Config.ForceMode ? "启用" : "禁用")}");
+        Console.WriteLine($"\n強制發送模式已{(_configManager.Config.ForceMode ? "啟用" : "停用")}");
         if (_configManager.Config.ForceMode)
         {
-            Console.WriteLine("警告：强制模式可能导致重复发送，仅在发送失败时启用。");
+            Console.WriteLine("警告：強制模式可能導致重複發送，僅在發送失敗時啟用。");
         }
     }
 
     private static void ChangeKeyDelay()
     {
-        Console.WriteLine($"\n当前按键延迟: {_configManager.Config.KeyDelay}ms");
-        Console.Write("输入新延迟 (30-500ms): ");
+        Console.WriteLine($"\n目前按鍵延遲: {_configManager.Config.KeyDelay}ms");
+        Console.Write("輸入新延遲 (30-500ms): ");
 
         if (int.TryParse(Console.ReadLine(), out var delay) && delay is >= 30 and <= 500)
         {
             _configManager.Config.KeyDelay = delay;
             _configManager.SaveConfig();
-            Console.WriteLine($"延迟更新为: {delay}ms");
+            Console.WriteLine($"延遲更新為: {delay}ms");
         }
         else
         {
-            Console.WriteLine("无效输入，需在30-500ms之间。");
+            Console.WriteLine("無效輸入，需在30-500ms之間。");
         }
     }
 
@@ -376,7 +376,7 @@ internal static partial class Program
         _configManager.Config.OnlySelfDeath = !_configManager.Config.OnlySelfDeath;
         _configManager.SaveConfig();
 
-        Console.WriteLine($"\n监听模式切换为: {(_configManager.Config.OnlySelfDeath ? "仅自己死亡" : "所有玩家死亡")}");
+        Console.WriteLine($"\n監聽模式切換為: {(_configManager.Config.OnlySelfDeath ? "僅自己死亡" : "所有玩家死亡")}");
     }
 
     private static void ToggleWindowCheck()
@@ -384,10 +384,10 @@ internal static partial class Program
         _configManager.Config.SkipWindowCheck = !_configManager.Config.SkipWindowCheck;
         _configManager.SaveConfig();
 
-        Console.WriteLine($"\n窗口检测已{(_configManager.Config.SkipWindowCheck ? "禁用" : "启用")}");
+        Console.WriteLine($"\n視窗檢測已{(_configManager.Config.SkipWindowCheck ? "停用" : "啟用")}");
         if (_configManager.Config.SkipWindowCheck)
         {
-            Console.WriteLine("警告：禁用窗口检测可能在非CS2窗口发送消息。");
+            Console.WriteLine("警告：停用視窗檢測可能在非CS2視窗發送訊息。");
         }
     }
 
@@ -401,23 +401,23 @@ internal static partial class Program
 
     private static void SetupPlayerName()
     {
-        Console.WriteLine("\n=== 首次设置 ===");
-        Console.WriteLine("请输入CS2游戏内玩家名（需完全一致）：");
+        Console.WriteLine("\n=== 首次設定 ===");
+        Console.WriteLine("請輸入CS2遊戲內玩家名稱（需完全一致）：");
 
         while (true)
         {
-            Console.Write("玩家名: ");
+            Console.Write("玩家名稱: ");
             var playerName = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(playerName))
             {
-                Console.WriteLine("玩家名不能为空。");
+                Console.WriteLine("玩家名稱不能為空。");
                 continue;
             }
 
             _configManager.Config.UserPlayerName = playerName.Trim();
             _configManager.SaveConfig();
-            Console.WriteLine($"玩家名设置: {playerName}");
+            Console.WriteLine($"玩家名稱設定: {playerName}");
             break;
         }
     }
@@ -425,8 +425,8 @@ internal static partial class Program
     private static void ChangePlayerName()
     {
         Console.WriteLine(
-            $"\n当前玩家名: {(_configManager.Config.UserPlayerName == "" ? "未设置" : _configManager.Config.UserPlayerName)}");
-        Console.Write("输入新玩家名 (Enter取消, '-'清空): ");
+            $"\n目前玩家名稱: {(_configManager.Config.UserPlayerName == "" ? "未設定" : _configManager.Config.UserPlayerName)}");
+        Console.Write("輸入新玩家名稱 (Enter取消, '-'清空): ");
         var playerName = Console.ReadLine();
 
         if (string.IsNullOrEmpty(playerName))
@@ -438,12 +438,12 @@ internal static partial class Program
         if (playerName == "-")
         {
             _configManager.Config.UserPlayerName = string.Empty;
-            Console.WriteLine("玩家名已清空。");
+            Console.WriteLine("玩家名稱已清空。");
         }
         else
         {
             _configManager.Config.UserPlayerName = playerName.Trim();
-            Console.WriteLine($"玩家名更新: {playerName}");
+            Console.WriteLine($"玩家名稱更新: {playerName}");
         }
 
         _configManager.SaveConfig();
@@ -457,46 +457,46 @@ internal static partial class Program
 
         if (_configManager.Config.UseCfgMode)
         {
-            Console.WriteLine("**CFG模式** (按键发送消息)");
-            Console.WriteLine($"绑定键: {string.Join(", ", _cfgManager.BindKeys)}");
-            Console.WriteLine($"CFG数量: {_cfgManager.TotalCfgFiles}");
-            Console.WriteLine($"CS2路径: {(_cfgManager.CS2Path != "" ? _cfgManager.CS2Path : "未设置 (S)")}");
-            Console.WriteLine($"消息数: {_chatManager.Messages.Count}");
+            Console.WriteLine("**CFG模式** (按鍵發送訊息)");
+            Console.WriteLine($"綁定鍵: {string.Join(", ", _cfgManager.BindKeys)}");
+            Console.WriteLine($"CFG數量: {_cfgManager.TotalCfgFiles}");
+            Console.WriteLine($"CS2路徑: {(_cfgManager.CS2Path != "" ? _cfgManager.CS2Path : "未設定 (S)")}");
+            Console.WriteLine($"訊息數: {_chatManager.Messages.Count}");
             var simulationMethod = _useInputSimulator ? "InputSimulator" :
                 _useSendInput ? "SendInput" :
                 _useWinFormSendKeys ? "WinForm SendKeys" : "keybd_event";
-            Console.WriteLine($"模拟: {simulationMethod}");
+            Console.WriteLine($"模擬: {simulationMethod}");
             UpdateCfgCount();
-            Console.WriteLine("\n操作: T-切换聊天模式 | A-加消息 | D-删消息 | L-列消息");
-            Console.WriteLine("      B-改绑定键 | S-设CS2路径 | G-生成CFG");
+            Console.WriteLine("\n操作: T-切換聊天模式 | A-加訊息 | D-刪訊息 | L-列訊息");
+            Console.WriteLine("      B-改綁定鍵 | S-設CS2路徑 | G-產生CFG");
         }
         else
         {
             var chatKeyDescription = _configManager.Config.ChatKey switch
             {
-                "y" => "全局",
-                "u" => "队内",
-                "enter" => "回车",
-                _ => $"自定义 ({_configManager.Config.ChatKey})"
+                "y" => "全域",
+                "u" => "團隊",
+                "enter" => "回車",
+                _ => $"自訂 ({_configManager.Config.ChatKey})"
             };
-            Console.WriteLine("**聊天模式** (GSI自动发送)");
-            Console.WriteLine($"聊天键: {chatKeyDescription}");
+            Console.WriteLine("**聊天模式** (GSI自動發送)");
+            Console.WriteLine($"聊天鍵: {chatKeyDescription}");
             Console.WriteLine(
-                $"监听: {(_configManager.Config.OnlySelfDeath ? "仅自己" : "所有")} (玩家: {_configManager.Config.UserPlayerName})");
-            Console.WriteLine($"窗口检测: {(_configManager.Config.SkipWindowCheck ? "禁用" : "启用")}");
-            Console.WriteLine($"强制发送: {(_configManager.Config.ForceMode ? "启用" : "禁用")}");
-            Console.WriteLine($"延迟: {_configManager.Config.KeyDelay}ms");
+                $"監聽: {(_configManager.Config.OnlySelfDeath ? "僅自己" : "所有")} (玩家: {_configManager.Config.UserPlayerName})");
+            Console.WriteLine($"視窗檢測: {(_configManager.Config.SkipWindowCheck ? "停用" : "啟用")}");
+            Console.WriteLine($"強制發送: {(_configManager.Config.ForceMode ? "啟用" : "停用")}");
+            Console.WriteLine($"延遲: {_configManager.Config.KeyDelay}ms");
             var simulationMethod = _useInputSimulator ? "InputSimulator" :
                 _useSendInput ? "SendInput" :
                 _useWinFormSendKeys ? "WinForm SendKeys" : "keybd_event";
-            Console.WriteLine($"模拟: {simulationMethod}");
-            Console.WriteLine($"消息数: {_chatManager.Messages.Count}");
-            Console.WriteLine("\n操作: T-切换CFG模式 | A-加消息 | D-删消息 | L-列消息 | C-改聊天键");
-            Console.WriteLine("      P-改玩家名 | M-切换监听 | W-切换窗口检测 | F-强制发送 | K-改延迟 | I-切换模拟");
+            Console.WriteLine($"模擬: {simulationMethod}");
+            Console.WriteLine($"訊息數: {_chatManager.Messages.Count}");
+            Console.WriteLine("\n操作: T-切換CFG模式 | A-加訊息 | D-刪訊息 | L-列訊息 | C-改聊天鍵");
+            Console.WriteLine("      P-改玩家名 | M-切換監聽 | W-切換視窗檢測 | F-強制發送 | K-改延遲 | I-切換模擬");
         }
 
-        Console.WriteLine("\n通用: V-版本 | ESC-退出");
-        Console.Write("选择操作: ");
+        Console.WriteLine("\n通用: V-版本 | ESC-離開");
+        Console.Write("選擇操作: ");
     }
 
     private static void OnPlayerDied(PlayerDied gameEvent)
@@ -505,36 +505,36 @@ internal static partial class Program
 
         if (_configManager.Config.OnlySelfDeath && gameEvent.Player.Name != _configManager.Config.UserPlayerName)
         {
-            Console.WriteLine("[GSI] 仅监听自己死亡，跳过。");
+            Console.WriteLine("[GSI] 僅監聽自己死亡，跳過。");
             return;
         }
 
         if (_configManager.Config.OnlySelfDeath && string.IsNullOrEmpty(_configManager.Config.UserPlayerName))
         {
-            Console.WriteLine("[GSI] 未设置玩家名，监听所有死亡。");
+            Console.WriteLine("[GSI] 未設定玩家名稱，監聽所有死亡。");
         }
 
         Console.WriteLine(gameEvent.Player.Name == _configManager.Config.UserPlayerName ||
                           string.IsNullOrEmpty(_configManager.Config.UserPlayerName)
             ? "[GSI] 你死了！"
-            : $"[GSI] 队友 {gameEvent.Player.Name} 死亡！");
+            : $"[GSI] 隊友 {gameEvent.Player.Name} 死亡！");
 
         if (!_configManager.Config.SkipWindowCheck && !IsCS2Active())
         {
-            Console.WriteLine("[GSI] CS2非活动窗口，跳过。");
+            Console.WriteLine("[GSI] CS2非使用中視窗，跳過。");
             return;
         }
 
         if (_configManager.Config.SkipWindowCheck)
         {
-            Console.WriteLine("[GSI] 跳过窗口检测，发送消息。");
+            Console.WriteLine("[GSI] 跳過視窗檢測，發送訊息。");
         }
 
         if (_configManager.Config.UseCfgMode)
         {
             var randomKey = _cfgManager.GetRandomBindKey();
             SimulateBindKey(randomKey);
-            Console.WriteLine($"[GSI] 模拟按键: {randomKey}");
+            Console.WriteLine($"[GSI] 模擬按鍵: {randomKey}");
         }
         else
         {
@@ -542,11 +542,11 @@ internal static partial class Program
             if (!string.IsNullOrEmpty(randomMessage))
             {
                 SendChatMessage(randomMessage);
-                Console.WriteLine($"[GSI] 发送消息: {randomMessage}");
+                Console.WriteLine($"[GSI] 發送訊息: {randomMessage}");
             }
             else
             {
-                Console.WriteLine("[GSI] 消息列表为空。");
+                Console.WriteLine("[GSI] 訊息清單為空。");
             }
         }
     }
@@ -578,9 +578,9 @@ internal static partial class Program
     {
         try
         {
-            Console.WriteLine($"[GSI] 准备发送: {message}");
+            Console.WriteLine($"[GSI] 準備發送: {message}");
             Console.WriteLine(
-                $"[GSI] 模拟方式: {(_useInputSimulator ? "InputSimulator" : _useSendInput ? "SendInput" : _useWinFormSendKeys ? "WinFormSendKeys" : "keybd_event")}");
+                $"[GSI] 模擬方式: {(_useInputSimulator ? "InputSimulator" : _useSendInput ? "SendInput" : _useWinFormSendKeys ? "WinFormSendKeys" : "keybd_event")}");
 
             ClipboardService.SetText(message);
             ReleaseAllKeys();
@@ -614,16 +614,16 @@ internal static partial class Program
                 {
                     if (retry < 2)
                     {
-                        Console.WriteLine($"[GSI] 粘贴失败，重试 ({retry + 1}/3)... 错误: {ex.Message}");
+                        Console.WriteLine($"[GSI] 貼上失敗，重試 ({retry + 1}/3)... 錯誤: {ex.Message}");
                         if (_useInputSimulator && ex.Message.Contains("not sent successfully"))
                         {
-                            Console.WriteLine("[GSI] InputSimulator权限问题，切换到SendInput...");
+                            Console.WriteLine("[GSI] InputSimulator權限問題，切換到SendInput...");
                             _useInputSimulator = false;
                             _useSendInput = true;
                         }
                         else if (_useSendInput && ex.Message.Contains("not sent successfully"))
                         {
-                            Console.WriteLine("[GSI] SendInput权限问题，切换到keybd_event...");
+                            Console.WriteLine("[GSI] SendInput權限問題，切換到keybd_event...");
                             _useSendInput = false;
                         }
 
@@ -635,27 +635,27 @@ internal static partial class Program
 
             Thread.Sleep(_configManager.Config.KeyDelay);
             SendEnterKey();
-            Console.WriteLine("[GSI] 发送完成。");
+            Console.WriteLine("[GSI] 發送完成。");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[GSI] 发送出错: {ex.Message}");
+            Console.WriteLine($"[GSI] 發送出錯: {ex.Message}");
             if (ex.Message.Contains("not sent successfully"))
             {
-                Console.WriteLine("\n[GSI] 解决建议：");
-                Console.WriteLine("1. 以管理员身份运行。");
-                Console.WriteLine("2. 按I切换模拟方式。");
-                Console.WriteLine("3. 确保CS2无更高权限。");
+                Console.WriteLine("\n[GSI] 解決建議：");
+                Console.WriteLine("1. 以系統管理員身分執行。");
+                Console.WriteLine("2. 按I切換模擬方式。");
+                Console.WriteLine("3. 確保CS2無更高權限。");
                 if (_useInputSimulator)
                 {
                     _useInputSimulator = false;
                     _useSendInput = true;
-                    Console.WriteLine("[GSI] 切换到SendInput。");
+                    Console.WriteLine("[GSI] 切換到SendInput。");
                 }
                 else if (_useSendInput)
                 {
                     _useSendInput = false;
-                    Console.WriteLine("[GSI] 切换到keybd_event。");
+                    Console.WriteLine("[GSI] 切換到keybd_event。");
                 }
             }
         }
@@ -676,7 +676,7 @@ internal static partial class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[GSI] InputSimulator失败: {ex.Message}, 尝试SendInput...");
+                Console.WriteLine($"[GSI] InputSimulator失敗: {ex.Message}, 嘗試SendInput...");
                 _useInputSimulator = false;
                 _useSendInput = true;
                 OpenChatBox();
@@ -711,7 +711,7 @@ internal static partial class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[GSI] InputSimulator清除失败: {ex.Message}, 尝试SendInput...");
+                Console.WriteLine($"[GSI] InputSimulator清除失敗: {ex.Message}, 嘗試SendInput...");
                 _useInputSimulator = false;
                 _useSendInput = true;
                 ClearChatInput();
@@ -760,7 +760,7 @@ internal static partial class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[GSI] InputSimulator回车失败: {ex.Message}, 尝试SendInput...");
+                Console.WriteLine($"[GSI] InputSimulator回車失敗: {ex.Message}, 嘗試SendInput...");
                 _useInputSimulator = false;
                 _useSendInput = true;
                 SendKeySendInput(0x0D);
@@ -798,7 +798,7 @@ internal static partial class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[GSI] InputSimulator释放失败: {ex.Message}, 尝试SendInput...");
+                Console.WriteLine($"[GSI] InputSimulator釋放失敗: {ex.Message}, 嘗試SendInput...");
                 _useInputSimulator = false;
                 _useSendInput = true;
                 ReleaseAllKeysSendInput();
@@ -1141,18 +1141,18 @@ internal static partial class Program
 
     private static void AddNewMessage()
     {
-        Console.Write("\n输入新死亡消息 (Enter确认): ");
+        Console.Write("\n輸入新死亡訊息 (Enter確認): ");
         var newMessage = Console.ReadLine();
 
         if (!string.IsNullOrWhiteSpace(newMessage))
         {
             _chatManager.AddMessage(newMessage);
             _chatManager.SaveMessages();
-            Console.WriteLine($"已添加: {newMessage}");
+            Console.WriteLine($"已新增: {newMessage}");
         }
         else
         {
-            Console.WriteLine("消息不能为空。");
+            Console.WriteLine("訊息不能為空。");
         }
 
         UpdateCfgCount();
@@ -1160,26 +1160,26 @@ internal static partial class Program
 
     private static void DeleteMessage()
     {
-        Console.WriteLine("\n消息列表：");
+        Console.WriteLine("\n訊息清單：");
         _chatManager.DisplayMessages();
         if (_chatManager.GetAllMessages().Count == 0) return;
 
-        Console.Write("输入要删除的消息编号: ");
+        Console.Write("輸入要刪除的訊息編號: ");
         if (int.TryParse(Console.ReadLine(), out var index))
         {
             if (_chatManager.RemoveMessage(index - 1))
             {
                 _chatManager.SaveMessages();
-                Console.WriteLine("消息已删除。");
+                Console.WriteLine("訊息已刪除。");
             }
             else
             {
-                Console.WriteLine("无效编号。");
+                Console.WriteLine("無效編號。");
             }
         }
         else
         {
-            Console.WriteLine("请输入数字。");
+            Console.WriteLine("請輸入數字。");
         }
 
         UpdateCfgCount();
@@ -1187,48 +1187,48 @@ internal static partial class Program
 
     private static void ChangeChatKey()
     {
-        Console.WriteLine($"\n当前聊天键: {_configManager.Config.ChatKey}");
-        Console.WriteLine("1. Y-全局 | 2. U-队内 | 3. Enter | 4. 自定义");
-        Console.Write("选择 (1-4): ");
+        Console.WriteLine($"\n目前聊天鍵: {_configManager.Config.ChatKey}");
+        Console.WriteLine("1. Y-全域 | 2. U-團隊 | 3. Enter | 4. 自訂");
+        Console.Write("選擇 (1-4): ");
 
         var choice = Console.ReadLine();
         switch (choice)
         {
             case "1":
                 _configManager.Config.ChatKey = "y";
-                Console.WriteLine("设为全局聊天 (Y)");
+                Console.WriteLine("設為全域聊天 (Y)");
                 break;
             case "2":
                 _configManager.Config.ChatKey = "u";
-                Console.WriteLine("设为队内聊天 (U)");
+                Console.WriteLine("設為團隊聊天 (U)");
                 break;
             case "3":
                 _configManager.Config.ChatKey = "enter";
-                Console.WriteLine("设为回车键");
+                Console.WriteLine("設為回車鍵");
                 break;
             case "4":
-                Console.Write("输入自定义键 (单字符): ");
+                Console.Write("輸入自訂鍵 (單字元): ");
                 var customKey = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(customKey) && customKey.Length == 1 &&
                     char.IsLetterOrDigit(customKey[0]))
                 {
                     _configManager.Config.ChatKey = customKey.ToLower();
-                    Console.WriteLine($"设为: {customKey.ToUpper()}");
+                    Console.WriteLine($"設為: {customKey.ToUpper()}");
                 }
                 else
                 {
-                    Console.WriteLine("无效输入，需单字母/数字。");
+                    Console.WriteLine("無效輸入，需單字母/數字。");
                     return;
                 }
 
                 break;
             default:
-                Console.WriteLine("无效选择。");
+                Console.WriteLine("無效選擇。");
                 return;
         }
 
         _configManager.SaveConfig();
-        Console.WriteLine("聊天键已保存。");
+        Console.WriteLine("聊天鍵已儲存。");
     }
 
     [LibraryImport("user32.dll")]

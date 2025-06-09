@@ -31,14 +31,14 @@ public class ChatMessageManager
                 if (loadedMessages != null)
                 {
                     Messages = loadedMessages;
-                    Console.WriteLine($"已加载 {Messages.Count} 条死亡消息。");
+                    Console.WriteLine($"已載入 {Messages.Count} 條死亡訊息。");
                     return;
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"加载消息文件时出错: {ex.Message}");
+            Console.WriteLine($"載入訊息檔案時出錯: {ex.Message}");
         }
 
         LoadDefaultMessages();
@@ -49,13 +49,13 @@ public class ChatMessageManager
     {
         Messages =
         [
-            "网卡", "手抖", "高延迟", "鼠标出问题了", "瓶颈期", "手冻僵了", "被阴了",
-            "卡输入法了", "day0了", "掉帧了", "手汗手滑", "腱鞘炎犯了", "吞子弹了",
-            "timing侠", "唉，资本", "刚打瓦回来不适应", "灵敏度有问题", "谁把我键位改了",
-            "感冒了没反应", "拆消音器去了", "校园网是这样的", "状态不行", "鼠标撞键盘上了",
-            "复健", "屏幕太小", "键盘坏了", "显示器延迟高", "对面锁了", "他静音"
+            "網卡", "手抖", "高延遲", "滑鼠出問題了", "瓶頸期", "手凍僵了", "被陰了",
+            "卡輸入法了", "day0了", "掉幀了", "手汗手滑", "腱鞘炎犯了", "吞子彈了",
+            "timing俠", "唉，資本", "剛打瓦回來不適應", "靈敏度有問題", "誰把我鍵位改了",
+            "感冒了沒反應", "拆消音器去了", "校園網是這樣的", "狀態不行", "滑鼠撞鍵盤上了",
+            "復健", "螢幕太小", "鍵盤壞了", "顯示器延遲高", "對面鎖了", "他靜音"
         ];
-        Console.WriteLine("已加载默认死亡消息。");
+        Console.WriteLine("已載入預設死亡訊息。");
     }
 
     public void SaveMessages()
@@ -67,7 +67,7 @@ public class ChatMessageManager
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"保存消息文件时出错: {ex.Message}");
+            Console.WriteLine($"儲存訊息檔案時出錯: {ex.Message}");
         }
     }
 
@@ -104,7 +104,7 @@ public class ChatMessageManager
     {
         if (Messages.Count == 0)
         {
-            Console.WriteLine("  消息列表为空。请按A添加。");
+            Console.WriteLine("  訊息清單為空。請按A新增。");
             return;
         }
 

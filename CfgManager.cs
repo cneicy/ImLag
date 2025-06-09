@@ -5,7 +5,7 @@ using Microsoft.Win32;
 
 namespace ImLag;
 
-[SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
+[SuppressMessage("Interoperability", "CA1416:驗證平台相容性")]
 public class CfgManager
 {
     private readonly ChatMessageManager _chatManager;
@@ -75,22 +75,22 @@ public class CfgManager
                         var potentialCs2Path = Path.Combine(libPath, relativePath);
                         if (!Directory.Exists(potentialCs2Path) ||
                             !File.Exists(Path.Combine(potentialCs2Path, "game", "csgo", "pak01_dir.vpk")))
-                            continue; // 检查特征文件
+                            continue; // 檢查特徵檔案
                         _configManager.Config.CS2Path = potentialCs2Path;
                         _configManager.SaveConfig();
                         UpdateCfgPath();
-                        Console.WriteLine($"自动找到CS2路径: {CS2Path}");
-                        Console.WriteLine($"CFG文件将被写入: {CfgPath}");
+                        Console.WriteLine($"自動找到CS2路徑: {CS2Path}");
+                        Console.WriteLine($"CFG檔案將被寫入: {CfgPath}");
                         return;
                     }
                 }
             }
 
-            Console.WriteLine("未能自动找到CS2路径。请使用菜单选项 (S) 手动设置。");
+            Console.WriteLine("未能自動找到CS2路徑。請使用選單選項 (S) 手動設定。");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"自动查找CS2路径时出错: {ex.Message}");
+            Console.WriteLine($"自動尋找CS2路徑時出錯: {ex.Message}");
         }
     }
 
@@ -103,27 +103,27 @@ public class CfgManager
         try
         {
             Directory.CreateDirectory(CfgPath);
-            Console.WriteLine($"已创建CFG目录: {CfgPath}");
+            Console.WriteLine($"已建立CFG目錄: {CfgPath}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"创建CFG目录 '{CfgPath}' 失败: {ex.Message}");
+            Console.WriteLine($"建立CFG目錄 '{CfgPath}' 失敗: {ex.Message}");
         }
     }
 
     public void SetCS2Path(string path)
     {
-        if (Directory.Exists(path) && File.Exists(Path.Combine(path, "game", "csgo", "pak01_dir.vpk"))) // 简单验证
+        if (Directory.Exists(path) && File.Exists(Path.Combine(path, "game", "csgo", "pak01_dir.vpk"))) // 簡單驗證
         {
             _configManager.Config.CS2Path = path;
             _configManager.SaveConfig();
             UpdateCfgPath();
-            Console.WriteLine($"CS2路径已设置为: {CS2Path}");
-            Console.WriteLine($"CFG文件将被写入: {CfgPath}");
+            Console.WriteLine($"CS2路徑已設定為: {CS2Path}");
+            Console.WriteLine($"CFG檔案將被寫入: {CfgPath}");
         }
         else
         {
-            Console.WriteLine("无效的CS2路径，目录不存在或不是有效的CS2安装目录。");
+            Console.WriteLine("無效的CS2路徑，目錄不存在或不是有效的CS2安裝目錄。");
         }
     }
 
@@ -136,17 +136,17 @@ public class CfgManager
             {
                 BindKeys.Add(normalizedKey);
                 _configManager.SaveConfig();
-                Console.WriteLine($"已添加绑定键: {normalizedKey}");
-                Console.WriteLine($"当前所有绑定键: {string.Join(", ", BindKeys)}");
+                Console.WriteLine($"已新增綁定鍵: {normalizedKey}");
+                Console.WriteLine($"目前所有綁定鍵: {string.Join(", ", BindKeys)}");
             }
             else
             {
-                Console.WriteLine("该按键已在绑定列表中。");
+                Console.WriteLine("該按鍵已在綁定清單中。");
             }
         }
         else
         {
-            Console.WriteLine("无效的按键，必须是单个字母或数字。");
+            Console.WriteLine("無效的按鍵，必須是單個字母或數字。");
         }
     }
 
@@ -154,7 +154,7 @@ public class CfgManager
     {
         if (BindKeys.Count <= 1)
         {
-            Console.WriteLine("至少需要保留一个绑定键。");
+            Console.WriteLine("至少需要保留一個綁定鍵。");
             return;
         }
 
@@ -162,12 +162,12 @@ public class CfgManager
         if (BindKeys.Remove(normalizedKey))
         {
             _configManager.SaveConfig();
-            Console.WriteLine($"已移除绑定键: {normalizedKey}");
-            Console.WriteLine($"当前所有绑定键: {string.Join(", ", BindKeys)}");
+            Console.WriteLine($"已移除綁定鍵: {normalizedKey}");
+            Console.WriteLine($"目前所有綁定鍵: {string.Join(", ", BindKeys)}");
         }
         else
         {
-            Console.WriteLine("未找到该绑定键。");
+            Console.WriteLine("未找到該綁定鍵。");
         }
     }
 
@@ -182,11 +182,11 @@ public class CfgManager
         {
             _configManager.Config.TotalCfgFiles = count;
             _configManager.SaveConfig();
-            Console.WriteLine($"CFG文件数量已更改为: {TotalCfgFiles}");
+            Console.WriteLine($"CFG檔案數量已更改為: {TotalCfgFiles}");
         }
         else
         {
-            Console.WriteLine("无效的数量，CFG文件数量应在1-200之间。");
+            Console.WriteLine("無效的數量，CFG檔案數量應在1-200之間。");
         }
     }
 
@@ -202,13 +202,13 @@ public class CfgManager
         var messages = _chatManager.GetAllMessages();
         if (messages.Count == 0)
         {
-            Console.WriteLine("\n消息列表为空，请先按A添加消息后再生成CFG。");
+            Console.WriteLine("\n訊息清單為空，請先按A新增訊息後再產生CFG。");
             return false;
         }
 
         if (string.IsNullOrEmpty(CS2Path) || !Directory.Exists(CS2Path))
         {
-            Console.WriteLine("\nCS2路径无效或未设置。请先按S设置正确的CS2路径。");
+            Console.WriteLine("\nCS2路徑無效或未設定。請先按S設定正確的CS2路徑。");
             return false;
         }
 
@@ -217,11 +217,10 @@ public class CfgManager
             UpdateCfgPath();
             if (!Directory.Exists(CfgPath))
             {
-                Console.WriteLine($"\nCFG目录 '{CfgPath}' 不存在且无法创建。请检查权限或手动创建。");
+                Console.WriteLine($"\nCFG目錄 '{CfgPath}' 不存在且無法建立。請檢查權限或手動建立。");
                 return false;
             }
         }
-
 
         try
         {
@@ -232,9 +231,8 @@ public class CfgManager
             if (actualTotalFiles < TotalCfgFiles)
             {
                 Console.WriteLine(
-                    $"注意：消息数量 ({shuffledMessages.Count}) 少于请求的CFG文件数 ({TotalCfgFiles})。将只为每条消息生成一个CFG，共 {actualTotalFiles} 个。");
+                    $"注意：訊息數量 ({shuffledMessages.Count}) 少於請求的CFG檔案數 ({TotalCfgFiles})。將只為每條訊息產生一個CFG，共 {actualTotalFiles} 個。");
             }
-
 
             for (var i = 0; i < actualTotalFiles; i++)
             {
@@ -249,7 +247,7 @@ public class CfgManager
                     writer.WriteLine($"say \"{messageToUse}\"");
                 }
 
-                Console.WriteLine($"已生成: {filePath}");
+                Console.WriteLine($"已產生: {filePath}");
             }
 
             for (var i = actualTotalFiles; i < 200; i++)
@@ -258,18 +256,17 @@ public class CfgManager
                 var oldFilePath = Path.Combine(CfgPath, oldFilename);
                 if (!File.Exists(oldFilePath)) continue;
                 File.Delete(oldFilePath);
-                Console.WriteLine($"已删除旧文件: {oldFilePath}");
+                Console.WriteLine($"已刪除舊檔案: {oldFilePath}");
             }
-
 
             if (actualTotalFiles > 0)
             {
                 GenerateSelectorFile(actualTotalFiles);
-                Console.WriteLine($"\n成功生成 {actualTotalFiles} 个消息CFG文件和1个选择器文件。");
+                Console.WriteLine($"\n成功產生 {actualTotalFiles} 個訊息CFG檔案和1個選擇器檔案。");
             }
             else
             {
-                Console.WriteLine("\n没有可用的消息来生成CFG文件。");
+                Console.WriteLine("\n沒有可用的訊息來產生CFG檔案。");
                 return false;
             }
 
@@ -277,7 +274,7 @@ public class CfgManager
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"生成CFG文件时出错: {ex.Message}");
+            Console.WriteLine($"產生CFG檔案時出錯: {ex.Message}");
             return false;
         }
     }
@@ -305,14 +302,14 @@ public class CfgManager
             writer.WriteLine($"imlag_do_say");
         }
 
-        Console.WriteLine($"已生成选择器文件: {selectorFilePath}");
+        Console.WriteLine($"已產生選擇器檔案: {selectorFilePath}");
     }
 
     public bool UpdateAutoexecFile()
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
-            Console.WriteLine("\nCFG路径无效或未设置，无法更新autoexec.cfg。");
+            Console.WriteLine("\nCFG路徑無效或未設定，無法更新autoexec.cfg。");
             return false;
         }
 
@@ -342,14 +339,14 @@ public class CfgManager
                 if (startIndex != -1 && endIndex != -1)
                 {
                     lines.RemoveRange(startIndex, endIndex - startIndex + 1);
-                    Console.WriteLine("已从autoexec.cfg中移除旧的ImLag绑定。");
+                    Console.WriteLine("已從autoexec.cfg中移除舊的ImLag綁定。");
                 }
 
                 lines.RemoveAll(line => line.Contains("exec imlag_say_selector"));
             }
             else
             {
-                Console.WriteLine($"autoexec.cfg 文件不存在于 '{CfgPath}'，将创建一个新的。");
+                Console.WriteLine($"autoexec.cfg 檔案不存在於 '{CfgPath}'，將建立一個新的。");
                 lines.Add("// Counter-Strike 2 Autoexec Configuration File");
                 lines.Add("// Generated by ImLag");
                 lines.Add("");
@@ -371,42 +368,42 @@ public class CfgManager
             lines.Add("host_writeconfig");
 
             File.WriteAllLines(autoexecFilePath, lines);
-            Console.WriteLine($"已{(autoexecExists ? "更新" : "创建")} autoexec.cfg 文件并添加/更新绑定。");
+            Console.WriteLine($"已{(autoexecExists ? "更新" : "建立")} autoexec.cfg 檔案並新增/更新綁定。");
             return true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"更新/创建 autoexec.cfg 时出错: {ex.Message}");
+            Console.WriteLine($"更新/建立 autoexec.cfg 時出錯: {ex.Message}");
             return false;
         }
     }
 
     public void ShowCfgInstructions()
     {
-        Console.WriteLine("\n=== CFG模式配置完成/说明 ===");
+        Console.WriteLine("\n=== CFG模式設定完成/說明 ===");
         if (string.IsNullOrEmpty(CS2Path))
         {
-            Console.WriteLine("CS2路径尚未设置，部分功能可能受限。请按S设置。");
+            Console.WriteLine("CS2路徑尚未設定，部分功能可能受限。請按S設定。");
             return;
         }
 
-        Console.WriteLine($"CFG文件已生成在: {CfgPath}");
+        Console.WriteLine($"CFG檔案已產生在: {CfgPath}");
         Console.WriteLine(
-            $"1. 包含随机消息的CFG文件: imlag_say_1.cfg ... imlag_say_{Math.Min(TotalCfgFiles, _chatManager.GetAllMessages().Count)}.cfg");
-        Console.WriteLine($"2. 选择器CFG文件: imlag_say_selector.cfg");
+            $"1. 包含隨機訊息的CFG檔案: imlag_say_1.cfg ... imlag_say_{Math.Min(TotalCfgFiles, _chatManager.GetAllMessages().Count)}.cfg");
+        Console.WriteLine($"2. 選擇器CFG檔案: imlag_say_selector.cfg");
         Console.WriteLine(
-            $"3. autoexec.cfg 中应已添加绑定: bind \"{string.Join(", ", BindKeys)}\" \"exec imlag_say_selector\"");
+            $"3. autoexec.cfg 中應已新增綁定: bind \"{string.Join(", ", BindKeys)}\" \"exec imlag_say_selector\"");
         Console.WriteLine();
         Console.WriteLine("使用方法:");
-        Console.WriteLine($"  - 在CS2游戏中，按下您设置的绑定键 (当前为: '{string.Join(", ", BindKeys)}') 即可发送一条随机消息。");
-        Console.WriteLine("  - 每次按下绑定键都会发送不同的消息，循环播放。");
+        Console.WriteLine($"  - 在CS2遊戲中，按下您設定的綁定鍵 (目前為: '{string.Join(", ", BindKeys)}') 即可發送一條隨機訊息。");
+        Console.WriteLine("  - 每次按下綁定鍵都會發送不同的訊息，循環播放。");
         Console.WriteLine();
-        Console.WriteLine("重要提示 - 确保autoexec.cfg被执行:");
-        Console.WriteLine("  如果您是首次配置或遇到问题，请确保CS2启动时会执行autoexec.cfg。");
-        Console.WriteLine("  方法1: 在Steam中，右键点击CS2 -> '属性...' -> '通用' -> '启动选项'，");
-        Console.WriteLine("          在输入框中添加(如果已有其他选项，用空格隔开): +exec autoexec.cfg");
-        Console.WriteLine("  方法2: 在游戏控制台中手动输入 `exec autoexec.cfg` 来测试。");
-        Console.WriteLine("          如果autoexec.cfg被正确执行，您应该能在控制台看到类似 \"ImLag: 'X' bound...\" 的消息。");
+        Console.WriteLine("重要提示 - 確保autoexec.cfg被執行:");
+        Console.WriteLine("  如果您是首次設定或遇到問題，請確保CS2啟動時會執行autoexec.cfg。");
+        Console.WriteLine("  方法1: 在Steam中，右鍵點擊CS2 -> '內容...' -> '一般' -> '啟動選項'，");
+        Console.WriteLine("          在輸入框中新增(如果已有其他選項，用空格隔開): +exec autoexec.cfg");
+        Console.WriteLine("  方法2: 在遊戲主控台中手動輸入 `exec autoexec.cfg` 來測試。");
+        Console.WriteLine("          如果autoexec.cfg被正確執行，您應該能在主控台看到類似 \"ImLag: 'X' bound...\" 的訊息。");
         Console.WriteLine();
     }
 }
