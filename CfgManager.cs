@@ -178,7 +178,7 @@ public class CfgManager
 
     public void SetTotalCfgFiles(int count)
     {
-        if (count is >= 1 and <= 200)
+        if (count is >= 1 and <= 1000)
         {
             _configManager.Config.TotalCfgFiles = count;
             _configManager.SaveConfig();
@@ -186,7 +186,7 @@ public class CfgManager
         }
         else
         {
-            Console.WriteLine("無效的數量，CFG檔案數量應在1-200之間。");
+            Console.WriteLine("無效的數量，CFG檔案數量應在1-1000之間。");
         }
     }
 
@@ -250,7 +250,7 @@ public class CfgManager
                 Console.WriteLine($"已產生: {filePath}");
             }
 
-            for (var i = actualTotalFiles; i < 200; i++)
+            for (var i = actualTotalFiles; i < 1000; i++)
             {
                 var oldFilename = $"imlag_say_{i + 1}.cfg";
                 var oldFilePath = Path.Combine(CfgPath, oldFilename);
