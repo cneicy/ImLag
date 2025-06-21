@@ -6,7 +6,7 @@ namespace ImLag;
 public class ChatMessageManager
 {
     public List<string> Messages = [];
-    private const string MessagesFile = "Messages.json";
+    private const string MessagesFile = "Messages.txt";
     private readonly Random _random = new();
 
     private readonly JsonSerializerOptions _jsonOptions = new()
@@ -17,7 +17,6 @@ public class ChatMessageManager
 
     public ChatMessageManager()
     {
-        LoadMessages();
     }
 
     public void LoadMessages()
@@ -26,11 +25,11 @@ public class ChatMessageManager
         {
             if (File.Exists(MessagesFile))
             {
-                var json = File.ReadAllText(MessagesFile);
-                var loadedMessages = JsonSerializer.Deserialize<List<string>>(json);
-                if (loadedMessages != null)
+                var messages = File.ReadAllText(MessagesFile);
+                var loadedMessages = messages.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                if (loadedMessages.Length > 0)
                 {
-                    Messages = loadedMessages;
+                    Messages.AddRange(loadedMessages);
                     Console.WriteLine($"已加载 {Messages.Count} 条死亡消息。");
                     return;
                 }
@@ -62,8 +61,7 @@ public class ChatMessageManager
     {
         try
         {
-            var json = JsonSerializer.Serialize(Messages, _jsonOptions);
-            File.WriteAllText(MessagesFile, json);
+            File.WriteAllText(MessagesFile, string.Join('\n', Messages));
         }
         catch (Exception ex)
         {
