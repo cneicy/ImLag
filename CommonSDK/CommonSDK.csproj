@@ -1,0 +1,24 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.4.1">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>CommonSDK</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.3.6" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Data\README.md" />
+      <Content Include="Event\README.md" />
+      <Content Include="Logger\README.md" />
+      <Content Include="Pool\README.md" />
+      <Content Include="Utils\README-F.md" />
+      <Content Include="Utils\READMEV.md" />
+    </ItemGroup>
+
+</Project>

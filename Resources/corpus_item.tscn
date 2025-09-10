@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvwl4mg6exonb"]
+
+[ext_resource type="Script" uid="uid://ds45v1d5cuf56" path="res://Scripts/UI/Body/CorpusItem.cs" id="1_3toqn"]
+
+[node name="CorpusItem" type="HBoxContainer"]
+script = ExtResource("1_3toqn")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "语料"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "删除"

@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImLag.GUI", "ImLag.GUI.csproj", "{101123A7-D2F8-4E04-9667-0646A6F0F907}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonSDK", "CommonSDK\CommonSDK.csproj", "{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{101123A7-D2F8-4E04-9667-0646A6F0F907}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B4F230B5-90B9-4D75-B48E-C2124CA62A1B}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

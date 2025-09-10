@@ -1,0 +1,22 @@
+<Project Sdk="Godot.NET.Sdk/4.4.1">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CounterStrike2GSI" Version="1.0.3.8403" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="CommonSDK\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="CommonSDK\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CommonSDK\CommonSDK.csproj" />
+  </ItemGroup>
+</Project>
