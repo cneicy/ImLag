@@ -1,13 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using CommonSDK.Event;
 using Microsoft.Win32;
 
 // ReSharper disable InconsistentNaming
 
 namespace ImLag.GUI.Scripts.Core;
 
+public class CfgStatusChangedEvent : EventBase
+{
+    public string Message { get; }
+    public DateTime Timestamp { get; }
+    
+    public CfgStatusChangedEvent(string message)
+    {
+        Message = message;
+        Timestamp = DateTime.UtcNow;
+    }
+}
+
+public class CfgErrorOccurredEvent : EventBase
+{
+    public string ErrorMessage { get; }
+    public string OperationType { get; set; }
+    public DateTime Timestamp { get; }
+    
+    public CfgErrorOccurredEvent(string errorMessage, string operationType = "")
+    {
+        ErrorMessage = errorMessage;
+        OperationType = operationType;
+        Timestamp = DateTime.UtcNow;
+    }
+}
+
+// ====== CfgManager ======
+[SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
 public class CfgManager
 {
     private readonly ChatMessageManager _chatManager;
@@ -25,9 +55,6 @@ public class CfgManager
     private const string ImLagCommentStart = "// --- ImLag Auto-Bind Start ---";
     private const string ImLagCommentEnd = "// --- ImLag Auto-Bind End ---";
 
-    public event EventHandler<string>? StatusChanged;
-    public event EventHandler<string>? ErrorOccurred;
-
     public CfgManager(ChatMessageManager chatManager, ConfigManager configManager)
     {
         _chatManager = chatManager;
@@ -41,6 +68,16 @@ public class CfgManager
         {
             UpdateCfgPath();
         }
+    }
+
+    private void StatusChanged(string message)
+    {
+        EventBus.TriggerEvent(new CfgStatusChangedEvent(message));
+    }
+
+    private void ErrorOccurred(string errorMessage, string operationType = "")
+    {
+        EventBus.TriggerEvent(new CfgErrorOccurredEvent(errorMessage, operationType));
     }
 
     public void FindCS2Path()
@@ -85,17 +122,17 @@ public class CfgManager
 
                         _configManager.UpdateCS2Path(potentialCs2Path);
                         UpdateCfgPath();
-                        StatusChanged?.Invoke(this, $"检测到CS2游戏路径: {CS2Path}");
+                        StatusChanged($"检测到CS2游戏路径: {CS2Path}");
                         return;
                     }
                 }
             }
 
-            StatusChanged?.Invoke(this, "CS2路径未找到，请手动设置");
+            StatusChanged("CS2路径未找到，请手动设置");
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"检测CS2路径失败: {ex.Message}");
+            ErrorOccurred($"检测CS2路径失败: {ex.Message}", "FindCS2Path");
         }
     }
 
@@ -108,11 +145,11 @@ public class CfgManager
         try
         {
             Directory.CreateDirectory(CfgPath);
-            StatusChanged?.Invoke(this, $"创建CFG文件夹: {CfgPath}");
+            StatusChanged($"创建CFG文件夹: {CfgPath}");
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"创建CFG文件夹失败: {ex.Message}");
+            ErrorOccurred($"创建CFG文件夹失败: {ex.Message}", "UpdateCfgPath");
         }
     }
 
@@ -122,11 +159,11 @@ public class CfgManager
         {
             _configManager.UpdateCS2Path(path);
             UpdateCfgPath();
-            StatusChanged?.Invoke(this, $"将CS2路径设置为: {CS2Path}");
+            StatusChanged($"将CS2路径设置为: {CS2Path}");
             return true;
         }
 
-        ErrorOccurred?.Invoke(this, "非法路径");
+        ErrorOccurred("非法路径", "SetCS2Path");
         return false;
     }
 
@@ -139,15 +176,15 @@ public class CfgManager
             {
                 var newBindKeys = new List<string>(BindKeys) { normalizedKey };
                 _configManager.UpdateBindKeys(newBindKeys);
-                StatusChanged?.Invoke(this, $"已添加全局绑定快捷键: {normalizedKey}");
+                StatusChanged($"已添加全局绑定快捷键: {normalizedKey}");
                 return true;
             }
 
-            ErrorOccurred?.Invoke(this, "此全局快捷键已存在");
+            ErrorOccurred("此全局快捷键已存在", "AddBindKey");
             return false;
         }
 
-        ErrorOccurred?.Invoke(this, "快捷键非法，请使用单个字母作为快捷键");
+        ErrorOccurred("快捷键非法，请使用单个字母作为快捷键", "AddBindKey");
         return false;
     }
 
@@ -155,7 +192,7 @@ public class CfgManager
     {
         if (BindKeys.Count <= 1)
         {
-            ErrorOccurred?.Invoke(this, "最少保留一个全局快捷键");
+            ErrorOccurred("最少保留一个全局快捷键", "RemoveBindKey");
             return false;
         }
 
@@ -164,11 +201,11 @@ public class CfgManager
         {
             var newBindKeys = BindKeys.Where(k => k != normalizedKey).ToList();
             _configManager.UpdateBindKeys(newBindKeys);
-            StatusChanged?.Invoke(this, $"已删除全局快捷键: {normalizedKey}");
+            StatusChanged($"已删除全局快捷键: {normalizedKey}");
             return true;
         }
 
-        ErrorOccurred?.Invoke(this, "全局快捷键未找到");
+        ErrorOccurred("全局快捷键未找到", "RemoveBindKey");
         return false;
     }
 
@@ -181,15 +218,15 @@ public class CfgManager
             {
                 var newTeamBindKeys = new List<string>(TeamBindKeys) { normalizedKey };
                 _configManager.UpdateTeamBindKeys(newTeamBindKeys);
-                StatusChanged?.Invoke(this, $"已添加队内快捷键: {normalizedKey}");
+                StatusChanged($"已添加队内快捷键: {normalizedKey}");
                 return true;
             }
 
-            ErrorOccurred?.Invoke(this, "此队内快捷键已存在");
+            ErrorOccurred("此队内快捷键已存在", "AddTeamBindKey");
             return false;
         }
 
-        ErrorOccurred?.Invoke(this, "快捷键非法，请使用单个字母作为快捷键");
+        ErrorOccurred("快捷键非法，请使用单个字母作为快捷键", "AddTeamBindKey");
         return false;
     }
 
@@ -197,7 +234,7 @@ public class CfgManager
     {
         if (TeamBindKeys.Count <= 1)
         {
-            ErrorOccurred?.Invoke(this, "最少保留一个队内快捷键");
+            ErrorOccurred("最少保留一个队内快捷键", "RemoveTeamBindKey");
             return false;
         }
 
@@ -206,11 +243,11 @@ public class CfgManager
         {
             var newTeamBindKeys = TeamBindKeys.Where(k => k != normalizedKey).ToList();
             _configManager.UpdateTeamBindKeys(newTeamBindKeys);
-            StatusChanged?.Invoke(this, $"已删除队内快捷键: {normalizedKey}");
+            StatusChanged($"已删除队内快捷键: {normalizedKey}");
             return true;
         }
 
-        ErrorOccurred?.Invoke(this, "队内快捷键未找到");
+        ErrorOccurred("队内快捷键未找到", "RemoveTeamBindKey");
         return false;
     }
 
@@ -251,13 +288,13 @@ public class CfgManager
         var messages = _chatManager.GetAllMessages();
         if (messages.Count == 0)
         {
-            ErrorOccurred?.Invoke(this, "消息列表为空，请先添加一条消息");
+            ErrorOccurred("消息列表为空，请先添加一条消息", "GenerateConfigFiles");
             return false;
         }
 
         if (string.IsNullOrEmpty(CS2Path) || !Directory.Exists(CS2Path))
         {
-            ErrorOccurred?.Invoke(this, "CS2游戏路径不存在或路径非法");
+            ErrorOccurred("CS2游戏路径不存在或路径非法", "GenerateConfigFiles");
             return false;
         }
 
@@ -266,7 +303,7 @@ public class CfgManager
             UpdateCfgPath();
             if (!Directory.Exists(CfgPath))
             {
-                ErrorOccurred?.Invoke(this, "CFG文件夹不存在或不能创建");
+                ErrorOccurred("CFG文件夹不存在或不能创建", "GenerateConfigFiles");
                 return false;
             }
         }
@@ -318,16 +355,16 @@ public class CfgManager
             if (actualTotalFiles > 0)
             {
                 GenerateSelectorFiles(actualTotalFiles);
-                StatusChanged?.Invoke(this, $"已生成 {actualTotalFiles * 2} 个CFG 文件 (全局+队内)");
+                StatusChanged($"已生成 {actualTotalFiles * 2} 个CFG 文件 (全局+队内)");
                 return true;
             }
 
-            ErrorOccurred?.Invoke(this, "没有足够的消息用以生成CFG");
+            ErrorOccurred("没有足够的消息用以生成CFG", "GenerateConfigFiles");
             return false;
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"生成CFG时出错: {ex.Message}");
+            ErrorOccurred($"生成CFG时出错: {ex.Message}", "GenerateConfigFiles");
             return false;
         }
     }
@@ -379,7 +416,7 @@ public class CfgManager
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
-            ErrorOccurred?.Invoke(this, "CFG路径不存在或路径非法");
+            ErrorOccurred("CFG路径不存在或路径非法", "UpdateAutoexecFile");
             return false;
         }
 
@@ -394,7 +431,7 @@ public class CfgManager
             if (autoexecExists && !File.Exists(backupFilePath))
             {
                 File.Copy(autoexecFilePath, backupFilePath);
-                StatusChanged?.Invoke(this, "已创建 autoexec.cfg 备份");
+                StatusChanged("已创建 autoexec.cfg 备份");
             }
 
             if (autoexecExists)
@@ -411,12 +448,12 @@ public class CfgManager
 
             AddImLagSection(lines);
             File.WriteAllLines(autoexecFilePath, lines);
-            StatusChanged?.Invoke(this, "更新 autoexec.cfg 完成");
+            StatusChanged("更新 autoexec.cfg 完成");
             return true;
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"更新 autoexec.cfg 时出错: {ex.Message}");
+            ErrorOccurred($"更新 autoexec.cfg 时出错: {ex.Message}", "UpdateAutoexecFile");
             return false;
         }
     }
@@ -481,7 +518,7 @@ public class CfgManager
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"Error counting existing CFG files: {ex.Message}");
+            ErrorOccurred($"Error counting existing CFG files: {ex.Message}", "GetExistingCfgFileCount");
             return 0;
         }
     }
@@ -490,7 +527,7 @@ public class CfgManager
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
-            ErrorOccurred?.Invoke(this, "CFG path is invalid or not set.");
+            ErrorOccurred("CFG path is invalid or not set.", "RestoreOriginalCfg");
             return false;
         }
 
@@ -529,16 +566,16 @@ public class CfgManager
 
             if (hasChanges)
             {
-                StatusChanged?.Invoke(this, "已成功还原原CFG设置");
+                StatusChanged("已成功还原原CFG设置");
                 return true;
             }
 
-            StatusChanged?.Invoke(this, "没有备份文件用以还原");
+            StatusChanged("没有备份文件用以还原");
             return false;
         }
         catch (Exception ex)
         {
-            ErrorOccurred?.Invoke(this, $"还原CFG时出错: {ex.Message}");
+            ErrorOccurred($"还原CFG时出错: {ex.Message}", "RestoreOriginalCfg");
             return false;
         }
     }

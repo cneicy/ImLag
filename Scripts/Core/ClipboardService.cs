@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommonSDK.Event;
 
 namespace ImLag.GUI.Scripts.Core;
 
+public class ClipboardErrorOccurredEvent(string msg) : EventBase
+{
+    public string Message { get; set; } = msg;
+}
 public static class ClipboardService
 {
     public static async Task SetTextAsync(string text)
@@ -16,7 +21,7 @@ public static class ClipboardService
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"设置剪贴板时出错: {ex.Message}", ex);
+            EventBus.TriggerEvent(new ClipboardErrorOccurredEvent($"设置剪贴板时出错: {ex.Message}"));
         }
     }
 }

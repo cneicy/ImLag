@@ -32,7 +32,7 @@ public partial class Entry : Node
     public ConfigManager ConfigManager;
     public CfgManager CfgManager;
     public ChatMessageSender MessageSender;
-    public GameStateListener? Gsl;
+    public GameStateListener Gsl;
     
     public override void _Ready()
     {
@@ -103,7 +103,7 @@ public partial class Entry : Node
         {
             try
             {
-                if (!KeySimulator.IsCS2Active())
+                if (!CSWindowChecker.IsCS2Active())
                 {
                     return;
                 }
@@ -119,9 +119,9 @@ public partial class Entry : Node
 
                 var chatType = useTeamChat ? "team" : "global";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
+                // ignored
             }
         }
         else
@@ -130,8 +130,9 @@ public partial class Entry : Node
             {
                 await MessageSender.SendMessageAsync(randomMessage);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                //ignored
             }
         }
     }

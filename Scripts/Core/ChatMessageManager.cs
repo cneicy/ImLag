@@ -2,8 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CommonSDK.Event;
 
 namespace ImLag.GUI.Scripts.Core;
+
+public class MessageAddedEvent(string msg) : EventBase
+{
+    public string Message { get; set; } = msg;
+}
+public class MessageRemovedEvent(string msg) : EventBase
+{
+    public string Message { get; set; } = msg;
+}
 
 public class ChatMessageManager
 {
@@ -12,9 +22,6 @@ public class ChatMessageManager
     private const string MessagesTxtFile = "Messages.txt";
 
     public int MessageCount => _messages.Count;
-
-    public event EventHandler<string>? MessageAdded;
-    public event EventHandler<string>? MessageRemoved;
 
     public void LoadMessages()
     {
@@ -30,7 +37,7 @@ public class ChatMessageManager
                 SaveMessages();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             LoadDefaultMessages();
         }
@@ -87,9 +94,9 @@ public class ChatMessageManager
         {
             SaveToTxtFile();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            
+           // ignored 
         }
     }
 
@@ -98,11 +105,10 @@ public class ChatMessageManager
         try
         {
             File.WriteAllLines(MessagesTxtFile, _messages);
-            Console.WriteLine($"已保存 {_messages.Count} 条消息到 {MessagesTxtFile}");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            
+            // ignored
         }
     }
 
@@ -115,7 +121,7 @@ public class ChatMessageManager
 
         _messages.Add(trimmedMessage);
         SaveMessages();
-        MessageAdded?.Invoke(this, trimmedMessage);
+        EventBus.TriggerEvent(new MessageAddedEvent(trimmedMessage));
         return true;
     }
 
@@ -126,7 +132,7 @@ public class ChatMessageManager
         var removed = _messages.Remove(message.Trim());
         if (!removed) return removed;
         SaveMessages();
-        MessageRemoved?.Invoke(this, message);
+        EventBus.TriggerEvent(new MessageRemovedEvent(message));
         return removed;
     }
 

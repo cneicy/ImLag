@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cc7aaufry4eb5"]
+[gd_scene load_steps=11 format=3 uid="uid://cc7aaufry4eb5"]
 
 [ext_resource type="Script" uid="uid://cnmx776l0rsf" path="res://Scripts/Entry.cs" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://07ry2gafsmcb" path="res://Scripts/UI/Head/VersionLabel.cs" id="2_1bvp3"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bvwl4mg6exonb" path="res://Resources/corpus_item.tscn" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://cxml27crgopq" path="res://Scripts/UI/Body/CorpusBox.cs" id="6_272bh"]
 [ext_resource type="Script" uid="uid://bm8l0u2ie3k0h" path="res://Scripts/UI/Body/StatisticsLabel.cs" id="9_kek77"]
+[ext_resource type="Script" uid="uid://dea16cx5kq2mw" path="res://Scripts/UI/Foot/StatusLabel.cs" id="10_4c57u"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -34,25 +35,30 @@ custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TopBar" type="HBoxContainer" parent="VBoxContainer/Head"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Head"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer/Head/MarginContainer"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="VBoxContainer/Head/TopBar"]
+[node name="Title" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
 layout_mode = 2
 text = "ImLag"
 
-[node name="Version" type="Label" parent="VBoxContainer/Head/TopBar"]
+[node name="Version" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
 layout_mode = 2
 text = "版本占位符"
 script = ExtResource("2_1bvp3")
 
-[node name="GSIStatus" type="Label" parent="VBoxContainer/Head/TopBar"]
+[node name="GSIStatus" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "GSIStatus"
 script = ExtResource("3_1bvp3")
 
-[node name="Mode" type="CheckButton" parent="VBoxContainer/Head/TopBar"]
+[node name="Mode" type="CheckButton" parent="VBoxContainer/Head/MarginContainer/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 8
 script = ExtResource("4_lquwl")
@@ -62,66 +68,72 @@ custom_minimum_size = Vector2(0, 520)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Description" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer"]
+[node name="Description" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 script = ExtResource("5_lquwl")
 
-[node name="ModeTitle" type="Label" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/Description"]
+[node name="ModeTitle" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description"]
 layout_mode = 2
 text = "Title"
 
-[node name="ModeDescriptions" type="Label" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/Description"]
+[node name="ModeDescriptions" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description"]
 layout_mode = 2
 text = "Description"
 
-[node name="CorpusPanel" type="HBoxContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer"]
+[node name="CorpusPanel" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CorpusAdd" type="PanelContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
+[node name="CorpusAdd" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
 custom_minimum_size = Vector2(300, 40)
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd"]
 layout_mode = 2
 script = ExtResource("6_5vw27")
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
 custom_minimum_size = Vector2(257, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "输入新的死亡消息"
 
-[node name="Button" type="Button" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "添加"
 
-[node name="Corpus" type="ScrollContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
+[node name="Corpus" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="CorpusBox" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus"]
+[node name="CorpusBox" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus"]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_272bh")
 
-[node name="CorpusItem" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus/CorpusBox" instance=ExtResource("6_7mycd")]
+[node name="CorpusItem" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus/CorpusBox" instance=ExtResource("6_7mycd")]
 layout_mode = 2
 
-[node name="Statistic" type="Label" parent="VBoxContainer/Body/ScrollContainer/VBoxContainer/CorpusPanel"]
+[node name="Statistic" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel"]
 custom_minimum_size = Vector2(0, 72.755)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -133,3 +145,11 @@ script = ExtResource("9_kek77")
 [node name="Foot" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/Foot"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Init"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("10_4c57u")
