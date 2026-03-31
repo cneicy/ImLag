@@ -6,10 +6,10 @@ using ImLag.GUI.Scripts.Core;
 namespace ImLag.GUI.Scripts.UI.Body;
 
 [EventBusSubscriber]
-public partial class CorpusBox : VBoxContainer
+public partial class PlayerListBox : VBoxContainer
 {
-    private readonly PackedScene _scene = ResourceLoader.Load<PackedScene>("res://Resources/corpus_item.tscn");
-    private ChatMessageManager? _chatManager;
+    private readonly PackedScene _scene = ResourceLoader.Load<PackedScene>("res://Resources/player_list_item.tscn");
+    private ConfigManager? _configManager;
 
     public override void _EnterTree()
     {
@@ -20,12 +20,18 @@ public partial class CorpusBox : VBoxContainer
     [EventSubscribe]
     public void OnProgramInitEvent(ProgramInitEvent evt)
     {
-        _chatManager = evt.ChatManager;
+        _configManager = evt.ConfigManager;
         RefreshItems();
     }
 
     [EventSubscribe]
-    public void RefreshCorpusItem(CorpusItemRefreshEvent evt)
+    public void OnConfigSavedEvent(ConfigSavedEvent evt)
+    {
+        RefreshItems();
+    }
+
+    [EventSubscribe]
+    public void OnPlayerListRefreshEvent(PlayerListRefreshEvent evt)
     {
         RefreshItems();
     }
@@ -38,29 +44,28 @@ public partial class CorpusBox : VBoxContainer
 
     private void RefreshItems()
     {
-        if (_chatManager == null)
+        if (_configManager == null)
         {
             return;
         }
 
         ClearItems();
-        var messages = _chatManager.GetAllMessages();
-        if (messages.Count == 0)
+        if (_configManager.Config.PlayerNames.Count == 0)
         {
             AddChild(new Label
             {
-                Text = LocalizationManager.T("corpus.empty"),
+                Text = LocalizationManager.T("general.player_list_empty"),
                 AutowrapMode = TextServer.AutowrapMode.WordSmart,
                 Modulate = new Color(0.7f, 0.7f, 0.7f)
             });
             return;
         }
 
-        foreach (var corpus in messages)
+        foreach (var playerName in _configManager.Config.PlayerNames)
         {
-            var item = _scene.Instantiate();
+            var item = _scene.Instantiate<PlayerListItem>();
+            item.SetPlayerName(playerName);
             AddChild(item);
-            item.GetChild<Label>(0).Text = corpus;
         }
     }
 

@@ -1,17 +1,23 @@
-[gd_scene load_steps=11 format=3 uid="uid://cc7aaufry4eb5"]
+[gd_scene format=3 uid="uid://cc7aaufry4eb5"]
 
 [ext_resource type="Script" uid="uid://cnmx776l0rsf" path="res://Scripts/Entry.cs" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://07ry2gafsmcb" path="res://Scripts/UI/Head/VersionLabel.cs" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://cu4fudf0catbp" path="res://Scripts/UI/Head/GSIStatusLabel.cs" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://dfq8p7gp7r4u8" path="res://Scripts/UI/Head/ModeCheckButton.cs" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://cbtwrq6v7kjow" path="res://Scripts/UI/Body/ModeDescriptionBox.cs" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://brr2scthqv2xn" path="res://Scripts/UI/Body/GeneralPanel.cs" id="5_nxq2f"]
+[ext_resource type="Script" uid="uid://dkxpcpw1ojtak" path="res://Scripts/UI/Body/BodySectionsController.cs" id="5_ycb3b"]
+[ext_resource type="Script" uid="uid://bck85poqxv5fy" path="res://Scripts/UI/Body/PlayerListAddBox.cs" id="5_ylx1h"]
+[ext_resource type="Script" uid="uid://clhobgen7gtl7" path="res://Scripts/UI/Body/PlayerListBox.cs" id="5_zm44p"]
+[ext_resource type="Script" uid="uid://rjv1fofmwnuc" path="res://Scripts/UI/Body/CfgModePanel.cs" id="6_0p1aa"]
+[ext_resource type="Script" uid="uid://d1l1n5o3ko8ci" path="res://Scripts/UI/Body/ChatModePanel.cs" id="6_3k2sa"]
 [ext_resource type="Script" uid="uid://tgbdedne651b" path="res://Scripts/UI/Body/CorpusAddBox.cs" id="6_5vw27"]
 [ext_resource type="PackedScene" uid="uid://bvwl4mg6exonb" path="res://Resources/corpus_item.tscn" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://cxml27crgopq" path="res://Scripts/UI/Body/CorpusBox.cs" id="6_272bh"]
 [ext_resource type="Script" uid="uid://bm8l0u2ie3k0h" path="res://Scripts/UI/Body/StatisticsLabel.cs" id="9_kek77"]
 [ext_resource type="Script" uid="uid://dea16cx5kq2mw" path="res://Scripts/UI/Foot/StatusLabel.cs" id="10_4c57u"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" unique_id=1149064673]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,137 +25,506 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Enrty" type="Node" parent="."]
+[node name="Enrty" type="Node" parent="." unique_id=2021412932]
 script = ExtResource("2_0xm2m")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=822033348]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 
-[node name="Head" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="Head" type="PanelContainer" parent="VBoxContainer" unique_id=1624031846]
+custom_minimum_size = Vector2(0, 84)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Head"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Head" unique_id=1977191487]
 layout_mode = 2
 theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
 
-[node name="TopBar" type="HBoxContainer" parent="VBoxContainer/Head/MarginContainer"]
+[node name="TopBar" type="VBoxContainer" parent="VBoxContainer/Head/MarginContainer" unique_id=67158470]
 layout_mode = 2
+theme_override_constants/separation = 4
 
-[node name="Title" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
+[node name="TitleRow" type="HBoxContainer" parent="VBoxContainer/Head/MarginContainer/TopBar" unique_id=1600088122]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar/TitleRow" unique_id=1652224977]
 layout_mode = 2
 text = "ImLag"
 
-[node name="Version" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
+[node name="Version" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar/TitleRow" unique_id=1666941731]
 layout_mode = 2
-text = "版本占位符"
+size_flags_horizontal = 3
+text = "版本"
 script = ExtResource("2_1bvp3")
 
-[node name="GSIStatus" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar"]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "GSIStatus"
-script = ExtResource("3_1bvp3")
-
-[node name="Mode" type="CheckButton" parent="VBoxContainer/Head/MarginContainer/TopBar"]
+[node name="Mode" type="CheckButton" parent="VBoxContainer/Head/MarginContainer/TopBar/TitleRow" unique_id=1509577785]
 layout_mode = 2
 size_flags_horizontal = 8
 script = ExtResource("4_lquwl")
 
-[node name="Body" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 520)
+[node name="GSIStatus" type="Label" parent="VBoxContainer/Head/MarginContainer/TopBar" unique_id=1019300289]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "GSI初始化中"
+horizontal_alignment = 1
+script = ExtResource("3_1bvp3")
+
+[node name="Body" type="PanelContainer" parent="VBoxContainer" unique_id=1335854344]
+custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body" unique_id=1945914658]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer" unique_id=339628712]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer" unique_id=1751594933]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 10
+script = ExtResource("5_ycb3b")
 
-[node name="Description" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="Description" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=142632335]
 layout_mode = 2
+theme_override_constants/separation = 4
 script = ExtResource("5_lquwl")
 
-[node name="ModeTitle" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description"]
+[node name="ModeTitle" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description" unique_id=1224905597]
 layout_mode = 2
-text = "Title"
+text = "CFG模式"
 
-[node name="ModeDescriptions" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description"]
+[node name="ModeDescriptions" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/Description" unique_id=937725282]
 layout_mode = 2
-text = "Description"
+text = "生成游戏配置文件，检测到死亡后自动按下绑定的快捷键发送消息"
+autowrap_mode = 3
 
-[node name="CorpusPanel" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="GeneralHeader" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=991882985]
 layout_mode = 2
+text = "- 通用设置"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel"]
+[node name="GeneralPanel" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=675595231]
+layout_mode = 2
+script = ExtResource("5_nxq2f")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel" unique_id=123959344]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer" unique_id=353483706]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1492168348]
+layout_mode = 2
+text = "通用设置"
+
+[node name="Hint" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1727773408]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "这些设置对 CFG 模式和聊天模式都生效，下方可维护监听玩家列表。"
+autowrap_mode = 3
+
+[node name="LanguageRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1727773409]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LanguageLabel" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/LanguageRow" unique_id=1727773410]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+text = "界面语言"
+vertical_alignment = 1
+
+[node name="LanguageSelect" type="OptionButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/LanguageRow" unique_id=1727773411]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CorpusAdd" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
-custom_minimum_size = Vector2(300, 40)
+[node name="AutoStartGsiToggle" type="CheckButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=271879653]
 layout_mode = 2
-size_flags_horizontal = 0
+text = "启动时自动打开 GSI"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd"]
+[node name="GsiToggleButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1307721956]
 layout_mode = 2
-script = ExtResource("6_5vw27")
+text = "启动 GSI"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
-custom_minimum_size = Vector2(257, 0)
+[node name="OnlySelfDeathToggle" type="CheckButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1767545200]
+layout_mode = 2
+text = "仅在监听玩家列表死亡时触发"
+
+[node name="PlayerNamesHint" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=2051001045]
+layout_mode = 2
+text = "监听玩家列表 (0)"
+
+[node name="PlayerAddPanel" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=1254207939]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "输入新的死亡消息"
 
-[node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/HBoxContainer"]
+[node name="PlayerAddBox" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerAddPanel" unique_id=84940274]
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("5_ylx1h")
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerAddPanel/PlayerAddBox" unique_id=1261036646]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "添加监听玩家"
+
+[node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerAddPanel/PlayerAddBox" unique_id=855059204]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "添加"
 
-[node name="Corpus" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer"]
-custom_minimum_size = Vector2(300, 150)
+[node name="PlayerList" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content" unique_id=2051001046]
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_vertical = 3
 
-[node name="CorpusBox" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus"]
+[node name="PlayerListBox" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerList" unique_id=1417598211]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+script = ExtResource("5_zm44p")
+
+[node name="CfgHeader" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=580304629]
+layout_mode = 2
+text = "- CFG 模式设置"
+
+[node name="CfgPanel" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1802009421]
+layout_mode = 2
+script = ExtResource("6_0p1aa")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel" unique_id=1946342201]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer" unique_id=2046071542]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1699163481]
+layout_mode = 2
+text = "CFG 模式"
+
+[node name="Hint" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1186674952]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "生成后会写入 autoexec，并使用当前全局/队内快捷键轮替发送语料。"
+autowrap_mode = 3
+
+[node name="ActionRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1384569411]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GenerateButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/ActionRow" unique_id=1945240044]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "生成 CFG"
+
+[node name="RestoreButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/ActionRow" unique_id=1490470968]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "还原 CFG"
+
+[node name="Cs2PathLabel" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1281082006]
+layout_mode = 2
+text = "CS2 路径"
+
+[node name="Cs2PathRow" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1809392770]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PathInput" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/Cs2PathRow" unique_id=529258197]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Steam\\steamapps\\common\\Counter-Strike 2"
+
+[node name="PathButtonRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/Cs2PathRow" unique_id=656626998]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ApplyPathButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/Cs2PathRow/PathButtonRow" unique_id=932486154]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "应用路径"
+
+[node name="DetectPathButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/Cs2PathRow/PathButtonRow" unique_id=820632017]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "自动检测"
+
+[node name="PreferTeamChatToggle" type="CheckButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1066870954]
+layout_mode = 2
+text = "优先使用队内聊天"
+
+[node name="GlobalKeysSection" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1029909588]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="GlobalKeysTitle" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection" unique_id=757963452]
+layout_mode = 2
+text = "全局聊天快捷键"
+
+[node name="CurrentGlobalKeys" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection" unique_id=1668116123]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "当前全局快捷键"
+autowrap_mode = 3
+
+[node name="GlobalKeyRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection" unique_id=578551295]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GlobalKeyInput" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection/GlobalKeyRow" unique_id=2069444040]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. k"
+
+[node name="AddGlobalKeyButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection/GlobalKeyRow" unique_id=1743397253]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "添加"
+
+[node name="RemoveGlobalKeyButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/GlobalKeysSection/GlobalKeyRow" unique_id=1885863639]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "删除"
+
+[node name="TeamKeysSection" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content" unique_id=1934934115]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TeamKeysTitle" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection" unique_id=172893531]
+layout_mode = 2
+text = "队内聊天快捷键"
+
+[node name="CurrentTeamKeys" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection" unique_id=954830084]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "当前队内快捷键"
+autowrap_mode = 3
+
+[node name="TeamKeyRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection" unique_id=1987790305]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TeamKeyInput" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection/TeamKeyRow" unique_id=734388509]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. l"
+
+[node name="AddTeamKeyButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection/TeamKeyRow" unique_id=422246441]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "添加"
+
+[node name="RemoveTeamKeyButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CfgPanel/MarginContainer/Content/TeamKeysSection/TeamKeyRow" unique_id=488182442]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "删除"
+
+[node name="ChatHeader" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1214939807]
+layout_mode = 2
+text = "- 聊天模式设置"
+
+[node name="ChatPanel" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=362216927]
+visible = false
+layout_mode = 2
+script = ExtResource("6_3k2sa")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel" unique_id=79720863]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer" unique_id=1111385514]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=446345964]
+layout_mode = 2
+text = "聊天模式"
+
+[node name="Hint" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=532173977]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "聊天模式会模拟打开聊天框、粘贴消息并发送。"
+autowrap_mode = 3
+
+[node name="ChatKeyLabel" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=124575321]
+layout_mode = 2
+text = "聊天按键"
+
+[node name="ChatKeyRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=555979102]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ChatKeyInput" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content/ChatKeyRow" unique_id=1692871734]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "y / u / enter"
+
+[node name="ApplyChatKeyButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content/ChatKeyRow" unique_id=1637357714]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "应用按键"
+
+[node name="KeyDelayLabel" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=1312120527]
+layout_mode = 2
+text = "按键延迟"
+
+[node name="KeyDelayRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=97313092]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="KeyDelayInput" type="SpinBox" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content/KeyDelayRow" unique_id=1171710094]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 30.0
+max_value = 1000.0
+step = 10.0
+value = 100.0
+
+[node name="ApplyKeyDelayButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content/KeyDelayRow" unique_id=1023912945]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "应用延迟"
+
+[node name="SkipWindowCheckToggle" type="CheckButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=1351963878]
+layout_mode = 2
+text = "跳过 CS2 窗口检查"
+
+[node name="ForceModeToggle" type="CheckButton" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/ChatPanel/MarginContainer/Content" unique_id=1930963528]
+layout_mode = 2
+text = "强制连续打开聊天框"
+
+[node name="CorpusHeader" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=62024236]
+layout_mode = 2
+text = "- 语料管理"
+
+[node name="CorpusPanel" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer" unique_id=412489375]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel" unique_id=1568235125]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="CorpusAdd" type="PanelContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer" unique_id=758315409]
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CorpusAddBox" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd" unique_id=399713141]
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("6_5vw27")
+
+[node name="AddRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox" unique_id=1327477473]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/AddRow" unique_id=1327477474]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "添加一条语料"
+
+[node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/AddRow" unique_id=582177279]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "添加"
+
+[node name="ActionRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox" unique_id=1327477475]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ImportButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/ActionRow" unique_id=1327477476]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "导入文件"
+
+[node name="ExportButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/ActionRow" unique_id=1327477477]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "导出文件"
+
+[node name="UrlRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox" unique_id=1327477478]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="UrlInput" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/UrlRow" unique_id=1327477479]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "粘贴纯文本或 JSON 语料链接"
+
+[node name="ImportUrlButton" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/UrlRow" unique_id=1327477480]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "链接导入"
+
+[node name="Corpus" type="ScrollContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer" unique_id=1843005499]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CorpusBox" type="VBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus" unique_id=1522218257]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_272bh")
 
-[node name="CorpusItem" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus/CorpusBox" instance=ExtResource("6_7mycd")]
+[node name="CorpusItem" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/Corpus/CorpusBox" unique_id=2041539554 instance=ExtResource("6_7mycd")]
 layout_mode = 2
 
-[node name="Statistic" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel"]
-custom_minimum_size = Vector2(0, 72.755)
+[node name="Statistic" type="Label" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel" unique_id=1422058813]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
-text = "Statistic"
-horizontal_alignment = 1
-script = ExtResource("9_kek77")
-
-[node name="Foot" type="PanelContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="StatusLabel" type="Label" parent="VBoxContainer/Foot"]
-layout_mode = 2
-size_flags_vertical = 1
-text = "Init"
+text = "消息数: 0
+已生成CFG组数: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("9_kek77")
+
+[node name="Foot" type="PanelContainer" parent="VBoxContainer" unique_id=1558535477]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/Foot" unique_id=1837722292]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "准备就绪"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 script = ExtResource("10_4c57u")

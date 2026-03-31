@@ -1,10 +1,12 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonSDK.Event;
 using CounterStrike2GSI;
 using CounterStrike2GSI.EventMessages;
 using Godot;
 using ImLag.GUI.Scripts.Core;
+using ImLag.GUI.Scripts.UI.Body;
 // ReSharper disable InconsistentNaming
 
 namespace ImLag.GUI.Scripts;
@@ -20,6 +22,7 @@ public class ProgramInitEvent : EventBase
     public CfgManager CfgManager;
     public ChatMessageSender MessageSender;
 }
+
 public class PlayerDeadEvent : EventBase
 {
     public string PlayerName { get; set; }
@@ -33,14 +36,14 @@ public partial class Entry : Node
     public CfgManager CfgManager;
     public ChatMessageSender MessageSender;
     public GameStateListener Gsl;
-    
+
     public override void _Ready()
     {
         base._Ready();
-        
+
         ConfigManager = new ConfigManager();
         ConfigManager.LoadConfig();
-        
+
         ChatManager = new ChatMessageManager();
         ChatManager.LoadMessages();
 
@@ -81,6 +84,7 @@ public partial class Entry : Node
             Gsl = null;
         }
     }
+
     private async void OnPlayerDied(PlayerDied gameEvent)
     {
         EventBus.TriggerEvent(new PlayerDeadEvent
@@ -88,7 +92,8 @@ public partial class Entry : Node
             PlayerName = gameEvent.Player.Name
         });
         if (ConfigManager.Config.OnlySelfDeath &&
-            !ConfigManager.Config.PlayerNames.Contains(gameEvent.Player.Name))
+            !ConfigManager.Config.PlayerNames.Any(name =>
+                string.Equals(name?.Trim(), gameEvent.Player.Name?.Trim(), StringComparison.OrdinalIgnoreCase)))
         {
             return;
         }
@@ -136,12 +141,13 @@ public partial class Entry : Node
             }
         }
     }
+
     private void StartGSI()
     {
         try
         {
             GD.Print("正在启动GSI...");
-                
+
             if (Gsl == null)
             {
                 InitializeGSI();
@@ -163,12 +169,13 @@ public partial class Entry : Node
             GD.Print($"GSI启动失败: {ex.Message}");
         }
     }
+
     private void StopGSI()
     {
         try
         {
             GD.Print("正在停止GSI...");
-                
+
             if (Gsl is { Running: true })
             {
                 Gsl.Stop();
@@ -184,5 +191,17 @@ public partial class Entry : Node
         {
             GD.Print($"停止GSI失败: {ex.Message}");
         }
+    }
+
+    [EventSubscribe]
+    public void OnGsiStartRequestEvent(GsiStartRequestEvent evt)
+    {
+        StartGSI();
+    }
+
+    [EventSubscribe]
+    public void OnGsiStopRequestEvent(GsiStopRequestEvent evt)
+    {
+        StopGSI();
     }
 }

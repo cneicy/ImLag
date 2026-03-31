@@ -7,6 +7,7 @@ namespace ImLag.GUI.Scripts.UI.Body;
 
 public class CorpusItemRefreshEvent : EventBase;
 
+[EventBusSubscriber]
 public partial class CorpusItem : HBoxContainer
 {
     public Label CorpusLabel;
@@ -18,7 +19,19 @@ public partial class CorpusItem : HBoxContainer
         _button = GetNode<Button>("Button");
         CorpusLabel = GetNode<Label>("Label");
         _chatManager = GetTree().Root.FindObjectOfType<Entry>().ChatManager;
+        ApplyTexts();
         _button.Pressed += OnDeleteBtnPressed;
+    }
+
+    [EventSubscribe]
+    public void OnLanguageChangedEvent(LanguageChangedEvent evt)
+    {
+        ApplyTexts();
+    }
+
+    private void ApplyTexts()
+    {
+        _button.Text = LocalizationManager.T("common.delete");
     }
 
     public void OnDeleteBtnPressed()

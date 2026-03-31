@@ -20,19 +20,30 @@ public partial class ModeCheckButton : CheckButton
     {
         _configManager = evt.ConfigManager;
         UseCfgMode = _configManager.Config.UseCfgMode;
-        Text = UseCfgMode ? "CFG模式" : "聊天模式";
+        ApplyText();
         ButtonPressed = !UseCfgMode;
+    }
+
+    [EventSubscribe]
+    public void OnLanguageChangedEvent(LanguageChangedEvent evt)
+    {
+        ApplyText();
     }
     
     public override void _Pressed()
     {
         base._Pressed();
-        Text = ButtonPressed ? "聊天模式" : "CFG模式";
         _configManager.UpdateUseCfgMode(!ButtonPressed);
         UseCfgMode = !ButtonPressed;
+        ApplyText();
         EventBus.TriggerEvent(new ModeUpdateEvent
         {
             UseCfgMode = UseCfgMode
         });
+    }
+
+    private void ApplyText()
+    {
+        Text = LocalizationManager.T(UseCfgMode ? "mode.cfg" : "mode.chat");
     }
 }

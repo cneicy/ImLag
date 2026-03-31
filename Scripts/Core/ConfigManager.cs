@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using CommonSDK.Event;
@@ -60,9 +61,6 @@ public class ConfigManager
 
     private void ValidateConfig()
     {
-        if (Config.TargetCfgFiles <= 0) 
-            Config.TargetCfgFiles = 5;
-            
         Config.CS2Path ??= string.Empty;
         Config.ChatKey ??= "y";
             
@@ -77,8 +75,9 @@ public class ConfigManager
                 
         if (Config.KeyDelay is < 30 or > 1000)
             Config.KeyDelay = 100;
-                
-        Config.Language ??= "zh-CN";
+
+        Config.Language = LocalizationManager.NormalizeLanguage(Config.Language);
+        LocalizationManager.SetLanguage(Config.Language, notify: false);
     }
 
     private void LoadDefaultConfig()
@@ -89,7 +88,6 @@ public class ConfigManager
             OnlySelfDeath = true,
             BindKeys = ["k"],
             TeamBindKeys = ["l"],
-            TargetCfgFiles = 5,
             CS2Path = string.Empty,
             UseCfgMode = true,
             ChatKey = "y",
@@ -119,7 +117,11 @@ public class ConfigManager
 
     public void UpdatePlayerNames(List<string> playerNames)
     {
-        Config.PlayerNames = new List<string>(playerNames);
+        Config.PlayerNames = playerNames
+            .Where(name => !string.IsNullOrWhiteSpace(name))
+            .Select(name => name.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
         SaveConfig();
     }
 
@@ -132,13 +134,6 @@ public class ConfigManager
     public void UpdateCS2Path(string path)
     {
         Config.CS2Path = path?.Trim() ?? string.Empty;
-        SaveConfig();
-    }
-
-    public void UpdateTotalCfgFiles(int count)
-    {
-        if (count is <= 0 or > 10000) return;
-        Config.TargetCfgFiles = count;
         SaveConfig();
     }
 
@@ -189,7 +184,8 @@ public class ConfigManager
 
     public void UpdateLanguage(string language)
     {
-        Config.Language = language ?? "zh-CN";
+        Config.Language = LocalizationManager.NormalizeLanguage(language);
+        LocalizationManager.SetLanguage(Config.Language);
         SaveConfig();
     }
 
@@ -210,7 +206,6 @@ public class AppConfig
 {
     public List<string> PlayerNames { get; set; } = [];
     public bool OnlySelfDeath { get; set; } = true;
-    public int TargetCfgFiles { get; set; } = 5;
     public List<string> BindKeys { get; set; } = ["k"];
     public List<string> TeamBindKeys { get; set; } = ["l"];
     public string CS2Path { get; set; } = string.Empty;

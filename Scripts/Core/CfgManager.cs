@@ -36,7 +36,10 @@ public class CfgErrorOccurredEvent : EventBase
     }
 }
 
-// ====== CfgManager ======
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
+public class CfgFilesChangedEvent : EventBase;
+
 [SuppressMessage("Interoperability", "CA1416:验证平台兼容性")]
 public class CfgManager
 {
@@ -47,7 +50,7 @@ public class CfgManager
     public string SteamPath { get; private set; } = string.Empty;
     public string CS2Path => _configManager.Config.CS2Path;
     public string CfgPath { get; private set; } = string.Empty;
-    public int TotalCfgFiles => GetExistingCfgFileCount();
+    public int GeneratedCfgGroups => GetGeneratedCfgGroupCount();
     public List<string> BindKeys => _configManager.Config.BindKeys;
     public List<string> TeamBindKeys => _configManager.Config.TeamBindKeys;
 
@@ -122,17 +125,17 @@ public class CfgManager
 
                         _configManager.UpdateCS2Path(potentialCs2Path);
                         UpdateCfgPath();
-                        StatusChanged($"检测到CS2游戏路径: {CS2Path}");
+                        StatusChanged(LocalizationManager.T("cfg.status.detected_path", CS2Path));
                         return;
                     }
                 }
             }
 
-            StatusChanged("CS2路径未找到，请手动设置");
+            StatusChanged(LocalizationManager.T("cfg.status.path_not_found"));
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"检测CS2路径失败: {ex.Message}", "FindCS2Path");
+            ErrorOccurred(LocalizationManager.T("cfg.error.detect_path_failed", ex.Message), "FindCS2Path");
         }
     }
 
@@ -145,11 +148,11 @@ public class CfgManager
         try
         {
             Directory.CreateDirectory(CfgPath);
-            StatusChanged($"创建CFG文件夹: {CfgPath}");
+            StatusChanged(LocalizationManager.T("cfg.status.created_cfg_dir", CfgPath));
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"创建CFG文件夹失败: {ex.Message}", "UpdateCfgPath");
+            ErrorOccurred(LocalizationManager.T("cfg.error.create_cfg_dir_failed", ex.Message), "UpdateCfgPath");
         }
     }
 
@@ -159,11 +162,11 @@ public class CfgManager
         {
             _configManager.UpdateCS2Path(path);
             UpdateCfgPath();
-            StatusChanged($"将CS2路径设置为: {CS2Path}");
+            StatusChanged(LocalizationManager.T("cfg.status.set_path", CS2Path));
             return true;
         }
 
-        ErrorOccurred("非法路径", "SetCS2Path");
+        ErrorOccurred(LocalizationManager.T("cfg.error.invalid_path"), "SetCS2Path");
         return false;
     }
 
@@ -176,15 +179,15 @@ public class CfgManager
             {
                 var newBindKeys = new List<string>(BindKeys) { normalizedKey };
                 _configManager.UpdateBindKeys(newBindKeys);
-                StatusChanged($"已添加全局绑定快捷键: {normalizedKey}");
+                StatusChanged(LocalizationManager.T("cfg.status.added_global_key", normalizedKey));
                 return true;
             }
 
-            ErrorOccurred("此全局快捷键已存在", "AddBindKey");
+            ErrorOccurred(LocalizationManager.T("cfg.error.duplicate_global_key"), "AddBindKey");
             return false;
         }
 
-        ErrorOccurred("快捷键非法，请使用单个字母作为快捷键", "AddBindKey");
+        ErrorOccurred(LocalizationManager.T("cfg.error.invalid_key"), "AddBindKey");
         return false;
     }
 
@@ -192,7 +195,7 @@ public class CfgManager
     {
         if (BindKeys.Count <= 1)
         {
-            ErrorOccurred("最少保留一个全局快捷键", "RemoveBindKey");
+            ErrorOccurred(LocalizationManager.T("cfg.error.keep_one_global_key"), "RemoveBindKey");
             return false;
         }
 
@@ -201,11 +204,11 @@ public class CfgManager
         {
             var newBindKeys = BindKeys.Where(k => k != normalizedKey).ToList();
             _configManager.UpdateBindKeys(newBindKeys);
-            StatusChanged($"已删除全局快捷键: {normalizedKey}");
+            StatusChanged(LocalizationManager.T("cfg.status.removed_global_key", normalizedKey));
             return true;
         }
 
-        ErrorOccurred("全局快捷键未找到", "RemoveBindKey");
+        ErrorOccurred(LocalizationManager.T("cfg.error.global_key_not_found"), "RemoveBindKey");
         return false;
     }
 
@@ -218,15 +221,15 @@ public class CfgManager
             {
                 var newTeamBindKeys = new List<string>(TeamBindKeys) { normalizedKey };
                 _configManager.UpdateTeamBindKeys(newTeamBindKeys);
-                StatusChanged($"已添加队内快捷键: {normalizedKey}");
+                StatusChanged(LocalizationManager.T("cfg.status.added_team_key", normalizedKey));
                 return true;
             }
 
-            ErrorOccurred("此队内快捷键已存在", "AddTeamBindKey");
+            ErrorOccurred(LocalizationManager.T("cfg.error.duplicate_team_key"), "AddTeamBindKey");
             return false;
         }
 
-        ErrorOccurred("快捷键非法，请使用单个字母作为快捷键", "AddTeamBindKey");
+        ErrorOccurred(LocalizationManager.T("cfg.error.invalid_key"), "AddTeamBindKey");
         return false;
     }
 
@@ -234,7 +237,7 @@ public class CfgManager
     {
         if (TeamBindKeys.Count <= 1)
         {
-            ErrorOccurred("最少保留一个队内快捷键", "RemoveTeamBindKey");
+            ErrorOccurred(LocalizationManager.T("cfg.error.keep_one_team_key"), "RemoveTeamBindKey");
             return false;
         }
 
@@ -243,11 +246,11 @@ public class CfgManager
         {
             var newTeamBindKeys = TeamBindKeys.Where(k => k != normalizedKey).ToList();
             _configManager.UpdateTeamBindKeys(newTeamBindKeys);
-            StatusChanged($"已删除队内快捷键: {normalizedKey}");
+            StatusChanged(LocalizationManager.T("cfg.status.removed_team_key", normalizedKey));
             return true;
         }
 
-        ErrorOccurred("队内快捷键未找到", "RemoveTeamBindKey");
+        ErrorOccurred(LocalizationManager.T("cfg.error.team_key_not_found"), "RemoveTeamBindKey");
         return false;
     }
 
@@ -288,13 +291,13 @@ public class CfgManager
         var messages = _chatManager.GetAllMessages();
         if (messages.Count == 0)
         {
-            ErrorOccurred("消息列表为空，请先添加一条消息", "GenerateConfigFiles");
+            ErrorOccurred(LocalizationManager.T("cfg.error.empty_messages"), "GenerateConfigFiles");
             return false;
         }
 
         if (string.IsNullOrEmpty(CS2Path) || !Directory.Exists(CS2Path))
         {
-            ErrorOccurred("CS2游戏路径不存在或路径非法", "GenerateConfigFiles");
+            ErrorOccurred(LocalizationManager.T("cfg.error.invalid_cs2_path"), "GenerateConfigFiles");
             return false;
         }
 
@@ -303,15 +306,16 @@ public class CfgManager
             UpdateCfgPath();
             if (!Directory.Exists(CfgPath))
             {
-                ErrorOccurred("CFG文件夹不存在或不能创建", "GenerateConfigFiles");
+                ErrorOccurred(LocalizationManager.T("cfg.error.invalid_cfg_dir"), "GenerateConfigFiles");
                 return false;
             }
         }
 
         try
         {
+            DeleteGeneratedMessageCfgFiles();
             var shuffledMessages = messages.OrderBy(_ => _random.Next()).ToList();
-            var actualTotalFiles = Math.Min(TotalCfgFiles, shuffledMessages.Count);
+            var actualTotalFiles = shuffledMessages.Count;
             
             for (var i = 0; i < actualTotalFiles; i++)
             {
@@ -339,32 +343,20 @@ public class CfgManager
                 writer.WriteLine($"say_team \"{messageToUse}\"");
             }
             
-            for (var i = actualTotalFiles; i < 10000; i++)
-            {
-                var oldGlobalFile = $"imlag_say_global_{i + 1}.cfg";
-                var oldTeamFile = $"imlag_say_team_{i + 1}.cfg";
-                var oldGlobalPath = Path.Combine(CfgPath, oldGlobalFile);
-                var oldTeamPath = Path.Combine(CfgPath, oldTeamFile);
-                
-                if (File.Exists(oldGlobalPath))
-                    File.Delete(oldGlobalPath);
-                if (File.Exists(oldTeamPath))
-                    File.Delete(oldTeamPath);
-            }
-
             if (actualTotalFiles > 0)
             {
                 GenerateSelectorFiles(actualTotalFiles);
-                StatusChanged($"已生成 {actualTotalFiles * 2} 个CFG 文件 (全局+队内)");
+                EventBus.TriggerEvent(new CfgFilesChangedEvent());
+                StatusChanged(LocalizationManager.T("cfg.status.generated", actualTotalFiles * 2));
                 return true;
             }
 
-            ErrorOccurred("没有足够的消息用以生成CFG", "GenerateConfigFiles");
+            ErrorOccurred(LocalizationManager.T("cfg.error.empty_messages"), "GenerateConfigFiles");
             return false;
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"生成CFG时出错: {ex.Message}", "GenerateConfigFiles");
+            ErrorOccurred(LocalizationManager.T("cfg.error.generate_failed", ex.Message), "GenerateConfigFiles");
             return false;
         }
     }
@@ -389,7 +381,6 @@ public class CfgManager
 
             writer.WriteLine();
             writer.WriteLine("alias imlag_do_global_say imlag_global_say_1");
-            writer.WriteLine("imlag_do_global_say");
         }
         
         var teamSelectorPath = Path.Combine(CfgPath, "imlag_say_team_selector.cfg");
@@ -408,7 +399,21 @@ public class CfgManager
 
             writer.WriteLine();
             writer.WriteLine("alias imlag_do_team_say imlag_team_say_1");
-            writer.WriteLine("imlag_do_team_say");
+        }
+    }
+
+    private void DeleteGeneratedMessageCfgFiles()
+    {
+        foreach (var file in Directory.GetFiles(CfgPath, "imlag_say_global_*.cfg")
+                     .Where(file => !file.EndsWith("_selector.cfg", StringComparison.OrdinalIgnoreCase)))
+        {
+            File.Delete(file);
+        }
+
+        foreach (var file in Directory.GetFiles(CfgPath, "imlag_say_team_*.cfg")
+                     .Where(file => !file.EndsWith("_selector.cfg", StringComparison.OrdinalIgnoreCase)))
+        {
+            File.Delete(file);
         }
     }
 
@@ -416,7 +421,7 @@ public class CfgManager
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
-            ErrorOccurred("CFG路径不存在或路径非法", "UpdateAutoexecFile");
+            ErrorOccurred(LocalizationManager.T("cfg.error.invalid_cfg_path"), "UpdateAutoexecFile");
             return false;
         }
 
@@ -431,7 +436,7 @@ public class CfgManager
             if (autoexecExists && !File.Exists(backupFilePath))
             {
                 File.Copy(autoexecFilePath, backupFilePath);
-                StatusChanged("已创建 autoexec.cfg 备份");
+                StatusChanged(LocalizationManager.T("cfg.status.autoexec_backup"));
             }
 
             if (autoexecExists)
@@ -448,12 +453,12 @@ public class CfgManager
 
             AddImLagSection(lines);
             File.WriteAllLines(autoexecFilePath, lines);
-            StatusChanged("更新 autoexec.cfg 完成");
+            StatusChanged(LocalizationManager.T("cfg.status.autoexec_updated"));
             return true;
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"更新 autoexec.cfg 时出错: {ex.Message}", "UpdateAutoexecFile");
+            ErrorOccurred(LocalizationManager.T("cfg.error.update_autoexec_failed", ex.Message), "UpdateAutoexecFile");
             return false;
         }
     }
@@ -484,17 +489,19 @@ public class CfgManager
         lines.Add("");
         lines.Add(ImLagCommentStart);
         lines.Add("// This block is automatically managed by ImLag");
+        lines.Add("exec imlag_say_global_selector");
+        lines.Add("exec imlag_say_team_selector");
         
         foreach (var key in BindKeys)
         {
-            lines.Add($"bind \"{key}\" \"exec imlag_say_global_selector\"");
-            lines.Add($"echo \"ImLag: '{key}' bound to global chat selector.\"");
+            lines.Add($"bind \"{key}\" \"imlag_do_global_say\"");
+            lines.Add($"echo \"ImLag: '{key}' bound to global chat.\"");
         }
         
         foreach (var key in TeamBindKeys)
         {
-            lines.Add($"bind \"{key}\" \"exec imlag_say_team_selector\"");
-            lines.Add($"echo \"ImLag: '{key}' bound to team chat selector.\"");
+            lines.Add($"bind \"{key}\" \"imlag_do_team_say\"");
+            lines.Add($"echo \"ImLag: '{key}' bound to team chat.\"");
         }
         
         lines.Add(ImLagCommentEnd);
@@ -504,7 +511,7 @@ public class CfgManager
         lines.Add("host_writeconfig");
     }
     
-    public int GetExistingCfgFileCount()
+    public int GetGeneratedCfgGroupCount()
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
@@ -513,21 +520,40 @@ public class CfgManager
 
         try
         {
-            var cfgFiles = Directory.GetFiles(CfgPath, "imlag_*.cfg");
-            return cfgFiles.Length;
+            var globalFiles = Directory.GetFiles(CfgPath, "imlag_say_global_*.cfg")
+                .Count(file => !file.EndsWith("_selector.cfg", StringComparison.OrdinalIgnoreCase));
+            var teamFiles = Directory.GetFiles(CfgPath, "imlag_say_team_*.cfg")
+                .Count(file => !file.EndsWith("_selector.cfg", StringComparison.OrdinalIgnoreCase));
+            return Math.Min(globalFiles, teamFiles);
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"Error counting existing CFG files: {ex.Message}", "GetExistingCfgFileCount");
+            ErrorOccurred(LocalizationManager.T("cfg.error.count_cfg_failed", ex.Message), "GetGeneratedCfgGroupCount");
             return 0;
         }
+    }
+
+    public bool ApplyGeneratedCfg()
+    {
+        if (!GenerateConfigFiles())
+        {
+            return false;
+        }
+
+        if (!UpdateAutoexecFile())
+        {
+            return false;
+        }
+
+        StatusChanged(LocalizationManager.T("cfg.status.apply_done", GeneratedCfgGroups));
+        return true;
     }
 
     public bool RestoreOriginalCfg()
     {
         if (string.IsNullOrEmpty(CfgPath) || !Directory.Exists(CfgPath))
         {
-            ErrorOccurred("CFG path is invalid or not set.", "RestoreOriginalCfg");
+            ErrorOccurred(LocalizationManager.T("cfg.error.restore_invalid_path"), "RestoreOriginalCfg");
             return false;
         }
 
@@ -566,16 +592,17 @@ public class CfgManager
 
             if (hasChanges)
             {
-                StatusChanged("已成功还原原CFG设置");
+                EventBus.TriggerEvent(new CfgFilesChangedEvent());
+                StatusChanged(LocalizationManager.T("cfg.status.restored"));
                 return true;
             }
 
-            StatusChanged("没有备份文件用以还原");
+            StatusChanged(LocalizationManager.T("cfg.status.no_backup"));
             return false;
         }
         catch (Exception ex)
         {
-            ErrorOccurred($"还原CFG时出错: {ex.Message}", "RestoreOriginalCfg");
+            ErrorOccurred(LocalizationManager.T("cfg.error.restore_failed", ex.Message), "RestoreOriginalCfg");
             return false;
         }
     }
