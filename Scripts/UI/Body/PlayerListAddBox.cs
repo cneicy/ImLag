@@ -15,7 +15,6 @@ public partial class PlayerListAddBox : HBoxContainer
 
     public override void _Ready()
     {
-        base._Ready();
         _lineEdit = GetNode<LineEdit>("LineEdit");
         _button = GetNode<Button>("Button");
         _configManager = GetTree().Root.FindObjectOfType<Entry>().ConfigManager;

@@ -18,7 +18,6 @@ public partial class PlayerListItem : HBoxContainer
 
     public override void _Ready()
     {
-        base._Ready();
         _button = GetNode<Button>("Button");
         PlayerLabel = GetNode<Label>("Label");
         _configManager = GetTree().Root.FindObjectOfType<Entry>().ConfigManager;

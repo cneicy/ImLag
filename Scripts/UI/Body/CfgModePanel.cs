@@ -30,7 +30,6 @@ public partial class CfgModePanel : PanelContainer
 
     public override void _Ready()
     {
-        base._Ready();
         InitializeUi();
         RefreshView();
     }

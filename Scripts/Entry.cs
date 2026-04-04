@@ -39,8 +39,6 @@ public partial class Entry : Node
 
     public override void _Ready()
     {
-        base._Ready();
-
         ConfigManager = new ConfigManager();
         ConfigManager.LoadConfig();
 
@@ -64,7 +62,6 @@ public partial class Entry : Node
 
     public override void _ExitTree()
     {
-        base._ExitTree();
         Gsl.Stop();
     }
 
@@ -121,8 +118,6 @@ public partial class Entry : Node
                 var randomKey = useTeamChat ? CfgManager.GetRandomTeamBindKey() : CfgManager.GetRandomBindKey();
 
                 KeySimulator.SimulateKeyPress(randomKey);
-
-                var chatType = useTeamChat ? "team" : "global";
             }
             catch (Exception)
             {

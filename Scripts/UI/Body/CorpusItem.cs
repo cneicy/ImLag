@@ -15,7 +15,6 @@ public partial class CorpusItem : HBoxContainer
     private ChatMessageManager _chatManager;
     public override void _Ready()
     {
-        base._Ready();
         _button = GetNode<Button>("Button");
         CorpusLabel = GetNode<Label>("Label");
         _chatManager = GetTree().Root.FindObjectOfType<Entry>().ChatManager;

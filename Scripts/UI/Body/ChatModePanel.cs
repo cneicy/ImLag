@@ -20,7 +20,6 @@ public partial class ChatModePanel : PanelContainer
 
     public override void _Ready()
     {
-        base._Ready();
         InitializeUi();
         RefreshView();
     }

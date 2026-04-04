@@ -12,7 +12,6 @@ public partial class GSIStatusLabel : Label
 
     public override void _Ready()
     {
-        base._Ready();
         RefreshText();
     }
 

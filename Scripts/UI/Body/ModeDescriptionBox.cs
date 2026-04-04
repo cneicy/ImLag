@@ -15,7 +15,6 @@ public partial class ModeDescriptionBox : VBoxContainer
 
     public override void _EnterTree()
     {
-        base._EnterTree();
         _titleLabel = (Label)this.Find("ModeTitle");
         _descriptionLabel = (Label)this.Find("ModeDescriptions");
     }

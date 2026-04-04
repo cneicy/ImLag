@@ -13,7 +13,6 @@ public partial class StatusLabel : Label
 
     public override void _Ready()
     {
-        base._Ready();
         RefreshText();
     }
 

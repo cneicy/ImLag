@@ -13,7 +13,6 @@ public partial class PlayerListBox : VBoxContainer
 
     public override void _EnterTree()
     {
-        base._EnterTree();
         ClearItems();
     }
 

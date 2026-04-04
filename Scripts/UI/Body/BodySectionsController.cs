@@ -26,7 +26,6 @@ public partial class BodySectionsController : VBoxContainer
 
     public override void _Ready()
     {
-        base._Ready();
         InitializeUi();
         RefreshSections();
     }

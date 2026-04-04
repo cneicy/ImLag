@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using CommonSDK.Event;
 using Godot;
@@ -25,7 +24,6 @@ public partial class GeneralPanel : PanelContainer
 
     public override void _Ready()
     {
-        base._Ready();
         InitializeUi();
         RefreshView();
     }
