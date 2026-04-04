@@ -187,6 +187,7 @@ script = ExtResource("5_ylx1h")
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerAddPanel/PlayerAddBox" unique_id=1261036646]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 placeholder_text = "添加监听玩家"
 
 [node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/GeneralPanel/MarginContainer/Content/PlayerAddPanel/PlayerAddBox" unique_id=855059204]
@@ -454,6 +455,7 @@ theme_override_constants/separation = 8
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/AddRow" unique_id=1327477474]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 placeholder_text = "添加一条语料"
 
 [node name="Button" type="Button" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox/AddRow" unique_id=582177279]
@@ -476,6 +478,7 @@ size_flags_horizontal = 3
 text = "导出文件"
 
 [node name="UrlRow" type="HBoxContainer" parent="VBoxContainer/Body/MarginContainer/ScrollContainer/VBoxContainer/CorpusPanel/VBoxContainer/CorpusAdd/CorpusAddBox" unique_id=1327477478]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
