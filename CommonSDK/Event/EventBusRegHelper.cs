@@ -331,6 +331,11 @@ public static class EventBusRegHelper
         private readonly Action<T> _originalAction;
 
         /// <summary>
+        /// 是否需要切回Godot主线程执行
+        /// </summary>
+        private readonly bool _requiresMainThreadDispatch;
+
+        /// <summary>
         /// 原始方法信息
         /// </summary>
         private readonly MethodInfo _originalMethod;
@@ -343,6 +348,7 @@ public static class EventBusRegHelper
         public MethodInfoPreservingWrapper(Action<T> originalAction, MethodInfo originalMethod)
         {
             _originalAction = originalAction;
+            _requiresMainThreadDispatch = originalAction.Target is Node;
             _originalMethod = originalMethod;
         }
 
@@ -367,8 +373,14 @@ public static class EventBusRegHelper
         {
             try
             {
-                _originalAction(arg);
-                return Task.CompletedTask;
+                if (!_requiresMainThreadDispatch)
+                {
+                    _originalAction(arg);
+                    return Task.CompletedTask;
+                }
+
+                // Godot节点更新必须回到主线程执行。
+                return GodotMainThreadDispatcher.InvokeAsync(() => _originalAction(arg));
             }
             catch (Exception ex)
             {

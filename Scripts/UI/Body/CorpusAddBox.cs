@@ -21,7 +21,6 @@ public partial class CorpusAddBox : VBoxContainer
 
     public override void _Ready()
     {
-        base._Ready();
         _lineEdit = GetNode<LineEdit>("AddRow/LineEdit");
         _addButton = GetNode<Button>("AddRow/Button");
         _importButton = GetNode<Button>("ActionRow/ImportButton");
@@ -140,9 +139,9 @@ public partial class CorpusAddBox : VBoxContainer
         _chatManager.ExportMessages(path);
     }
 
-    private void OnUrlSubmitted(string _)
+    private void OnUrlSubmitted(string submittedText)
     {
-        var __ = ImportFromUrlAsync();
+        _ = ImportFromUrlAsync();
     }
 
     private void OnImportUrlButtonPressed()
@@ -156,15 +155,20 @@ public partial class CorpusAddBox : VBoxContainer
         try
         {
             var result = await _chatManager.ImportMessagesFromUrlAsync(_urlInput.Text);
-            if (result.AddedCount > 0)
+            await GodotMainThreadDispatcher.InvokeAsync(() =>
             {
+                if (result.AddedCount <= 0)
+                {
+                    return;
+                }
+
                 _urlInput.Text = string.Empty;
                 EventBus.TriggerEvent(new CorpusItemRefreshEvent());
-            }
+            });
         }
         finally
         {
-            _importUrlButton.Disabled = false;
+            await GodotMainThreadDispatcher.InvokeAsync(() => _importUrlButton.Disabled = false);
         }
     }
 }

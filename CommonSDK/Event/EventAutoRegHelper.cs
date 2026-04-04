@@ -134,6 +134,8 @@ public static class EventAutoRegHelper
         lock (InitLock)
         {
             if (IsInitialized) return;
+
+            GodotMainThreadDispatcher.CaptureCurrentThread();
             
             _sceneTree = Engine.GetMainLoop() as SceneTree;
             if (_sceneTree == null)
@@ -551,6 +553,7 @@ public static class EventAutoRegHelper
             IsInitialized = false;
             _isMonitoring = false;
             _sceneTree = null;
+            GodotMainThreadDispatcher.Reset();
             
             Logger.LogInfo("静态自动注册管理器已清理");
         }
